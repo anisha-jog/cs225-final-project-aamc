@@ -27,9 +27,12 @@ class Graph {
         ~Graph();
         Graph(const Graph& other);
         bool operator==(const Graph& other) const;
+        vector<Edge*> connectedEdges(Vertex v);
+        Vertex getVertex(int i) { return vertices[i]; }
+        int getSize() { return vertices.size(); }
 
     private:
         std::unordered_map<Vertex, std::vector<Edge*>> adjacencyList;
-        std::vector<Vertex> vertex;
+        std::vector<Vertex> vertices;
         std::unordered_map<Vertex, int> vertI;
 };
