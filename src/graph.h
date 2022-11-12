@@ -1,7 +1,10 @@
 #pragma once
 
+#include <iostream>
 #include <vector>
 #include <string>
+#include <unordered_map>
+#include <fstream>
 
 using namespace std;
 
@@ -14,19 +17,19 @@ class Graph {
             Vertex destination;
             double weight = 1;
 
-            Edge(){};
+            Edge() {};
             Edge(Vertex src, Vertex dest) : source(src), destination(dest) {};
             Edge(Vertex src, Vertex dest, double wgt) : source(src), destination(dest), weight(wgt) {};
         };
 
-        Graph(){};
+        Graph() {};
+        Graph(std::ifstream& fs);
         ~Graph();
         Graph(const Graph& other);
         bool operator==(const Graph& other) const;
 
-        void insertVertex(Vertex v);
-        void insertEdge(Vertex v1, Vertex v2);
-
     private:
-        
+        std::unordered_map<Vertex, std::vector<Edge*>> adjacencyList;
+        std::vector<Vertex> vertex;
+        std::unordered_map<Vertex, int> vertI;
 };
