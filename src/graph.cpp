@@ -21,7 +21,7 @@ Graph::Graph(std::ifstream& fs) {
         
         if (vertI.find(v1) == vertI.end()) { 
             vertI[v1] = vertI.size();
-            vertex.push_back(v1);
+            vertices.push_back(v1);
         }
 
         adjacencyList[v1].push_back(new Graph::Edge(v1, v2));
@@ -29,7 +29,7 @@ Graph::Graph(std::ifstream& fs) {
         if (adjacencyList.find(v2) == adjacencyList.end()) { 
             adjacencyList[v2] = std::vector<Graph::Edge*>();
             vertI.insert(std::make_pair(v2, vertI.size()));
-            vertex.push_back(v2);
+            vertices.push_back(v2);
         }
     }
 }
