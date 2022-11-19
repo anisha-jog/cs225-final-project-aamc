@@ -55,8 +55,8 @@ bool Graph::operator==(const Graph& other) const {
 Graph::Graph(std::ifstream& fs) {
     Vertex v1, v2;
     while (!fs.eof()) {
-        getline(fs, v1, '\t');
-        getline(fs, v2, '\n');
+        getline(fs, v1.id, '\t');
+        getline(fs, v2.id, '\n');
         
         if (vertI.find(v1) == vertI.end()) { 
             vertI[v1] = vertI.size();

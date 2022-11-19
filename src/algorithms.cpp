@@ -3,9 +3,11 @@
 #include <queue>
 #include <vector>
 #include <list>
+#include <stack>
 
 using namespace std;
 using Edge = Graph::Edge;
+using Vertex = Graph::Vertex;
 
 vector<Vertex> bfs(Graph graph, Vertex start) {
     unordered_map<Vertex, int> visited;
@@ -67,4 +69,22 @@ vector<Vertex> bfs(Graph graph, Vertex start) {
 // https://www.ccs.neu.edu/home/daikeshi/notes/PageRank.pdf
 std::list<std::pair<Vertex, double>> pageRank(const Graph& graph, int iter = 1000) { 
     
+}
+
+
+// Set up Tarjan's Algorithm
+vector<Vertex> tarjan(Graph graph) {
+    int idx = 0;
+    std::stack<Vertex> stack;
+
+    for (int i = 0; i < graph.getSize(); i++) {
+        Vertex v = graph.getVertex(i);
+        v.index = idx;
+        v.lowlink = idx;
+        idx++;
+        stack.push(v);
+        v.onStack = true;
+
+        // consider the successors of v
+    }
 }
