@@ -2,6 +2,7 @@
 
 #include <queue>
 #include <vector>
+#include <list>
 
 using namespace std;
 using Edge = Graph::Edge;
@@ -59,4 +60,11 @@ vector<Vertex> bfs(Graph graph, Vertex start) {
     // by this point, every vertex has been in the queue, popped, visited, and added to the traversal.
 
     return traversal;
+}
+
+
+// Setup PageRank Algorithm
+// https://www.ccs.neu.edu/home/daikeshi/notes/PageRank.pdf
+std::list<std::pair<Vertex, double>> pageRank(const Graph& graph, int iter = 1000) { 
+    
 }
