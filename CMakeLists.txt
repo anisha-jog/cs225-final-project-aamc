@@ -1,16 +1,9 @@
 cmake_minimum_required(VERSION 3.10)
 
 # Assignment Information (these are the *only* things you need to change here between assignments)
-set(assignment_name "cs225-final-project-aamc") # Name of the assignment
+set(assignment_name "final-project") # Name of the assignment
 set(assignment_version 1.2022.12.0) # Version, where minor=semester_year, patch=semester_end_month, tweak=revision
-set(assignment_entrypoints "main" "tests") # Entrypoints to run the program !--> DO NOT FORGET TO ADD TEST FILE ENTRYPOINT <--!
-# set(assignment_clean_rm "unsolved.png"
-#                        "solved.png"
-#                        "testDrawMazeSmall.png"
-#                        "testDrawMazeLarge.png"
-#                        "testDrawSolutionMed.png"
-#                        "testDrawSolutionLarge.png") # Generated files that should be removed with "make clean"
-set(assignment_container "fa22") # Container we are targetting
+set(assignment_entrypoints "main" "tests") # Entrypoints to run the program
 
 # Add color support to our messages.
 # See: https://stackoverflow.com/questions/18968979/how-to-get-colorized-output-with-cmake
@@ -31,31 +24,6 @@ site_name(SITE_NAME)
 
 if(SITE_NAME MATCHES "ews.illinois.edu$")
     set(EWS TRUE)
-endif()
-
-# Handle unsupported container warnings.
-# Default to remind students to use our container, unless they are using our targeted container.
-set(REMIND_CONTAINER TRUE)
-if(DEFINED ENV{CS225_CONTAINER})
-    if($ENV{CS225_CONTAINER} STREQUAL ${assignment_container})
-        # This is the container we are targetting, so don't print the reminder.
-        unset(REMIND_CONTAINER)
-    elseif($ENV{CS225_CONTAINER} MATCHES ".+-arm")
-        message(STATUS "${ColorYellow}Looks like you are using an ARM/M1 container.${ColorReset}")
-    else()
-        message(STATUS "${ColorYellow}Looks like you are using an unrecognized container.${ColorReset}")
-    endif()
-elseif(DEFINED EWS)
-    message(STATUS "${ColorYellow}Looks like you are using EWS.${ColorReset}")
-    message(STATUS "${ColorRed}EWS is outdated and unsupported. Use at your own risk.${ColorReset}")
-else()
-    # Warn students who are not using our container at all.
-    message(STATUS "${ColorYellow}Looks like you are not using the provided container.${ColorReset}")
-endif()
-
-# Remind students to use our container.
-if(DEFINED REMIND_CONTAINER)
-    message(WARNING "${ColorYellow}Make sure you test on the CS225 container before the deadline.${ColorReset}")
 endif()
 
 # Disable in-source builds (running "cmake ." in the project directory)
