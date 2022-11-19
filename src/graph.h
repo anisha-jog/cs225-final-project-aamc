@@ -8,18 +8,27 @@
 
 using namespace std;
 
-typedef string Vertex;
-
 class Graph {
     public:
         struct Edge {
             Vertex source;
             Vertex destination;
-            double weight = 1;
+            double weight;
 
-            Edge() {};
-            Edge(Vertex src, Vertex dest) : source(src), destination(dest) {};
+            Edge() { weight = 1; };
+            Edge(Vertex src, Vertex dest) : source(src), destination(dest) { weight = 1; };
             Edge(Vertex src, Vertex dest, double wgt) : source(src), destination(dest), weight(wgt) {};
+        };
+
+        struct Vertex {
+            int index;
+            int lowlink;
+            string id;
+            bool onStack;
+
+            Vertex() { index = -1; lowlink = -1; id = -1; onStack = false; };
+            Vertex(int ids) : id(to_string(ids)) { index = -1; lowlink = -1; onStack = false; };
+            Vertex(int idx, int link, int ids) : index(idx), lowlink(link), id(to_string(ids)) { onStack = false; };
         };
 
         Graph() {};
