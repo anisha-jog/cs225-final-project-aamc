@@ -38,6 +38,7 @@ class Graph {
         bool operator==(const Graph& other) const;
         vector<Edge*> connectedEdges(Vertex v);
         Vertex getVertex(int i) { return vertices[i]; }
+        std::vector<Edge*> getEdges(Vertex v) { return adjacencyList.at(v); }
         void insertVertex(Vertex v);
         void insertEdge(Vertex v1, Vertex v2);
         int getSize() { return vertices.size(); }

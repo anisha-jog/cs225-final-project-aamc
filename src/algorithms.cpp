@@ -78,13 +78,61 @@ vector<Vertex> tarjan(Graph graph) {
     std::stack<Vertex> stack;
 
     for (int i = 0; i < graph.getSize(); i++) {
-        Vertex v = graph.getVertex(i);
-        v.index = idx;
-        v.lowlink = idx;
-        idx++;
-        stack.push(v);
-        v.onStack = true;
+        if (graph.getVertex(i).index == -1) {
+            strongConnect(graph.getVertex(i), stack);
+        }
+    }
+}
 
-        // consider the successors of v
+// Believe this should be void.
+void strongConnect(Vertex v, std::stack<Vertex>& stack) {
+
+    v.index = idx;
+    v.lowlink = idx;
+    idx++;
+    stack.push(v);
+    v.onStack = true;
+    std::vector<Edge*> edges = graph.getEdges(v);
+
+    // Consider the successors of v.
+    for (int j = 0; j < edges.size(); j++) {
+        Vertex dest = edges[j].destination;
+        if (dest.index == -1) {
+            // Vertex has not been visited; recurse.
+            strongConnect(dest, stack);
+            if (dest.lowlink < v.lowlink) {
+                v.lowlink = dest.lowlink;
+            }
+        } else if (dest.onStack()) {
+            // Vertex is already in stack, and therefore has been visited. Index, rather, than lowlink, is not a mistake.
+            if (dest.index < v.lowlink) {
+                v.lowlink = dest.index;
+            }
+        }
+    }
+
+    // Check if v is a root node
+    if (v.lowlink == v.index) {
+
+        // TODO: Create a new strongly connected component
+
+        // - - - -
+
+        Vertex pop;
+        
+        while (pop != v) {
+            pop = stack.pop();
+            pop.onStack = false;
+
+            // TODO: Add vertex to strongly connected component
+
+            // - - - -
+
+        }
+
+        // Output strongly connected component
+
+        // - - - -
+
     }
 }
