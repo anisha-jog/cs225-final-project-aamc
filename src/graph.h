@@ -6,7 +6,7 @@
 #include <fstream>
 
 using namespace std;
-//ok we cant do rule of 0 bc we have to deal with memory dumbass
+
 class Graph {
     public:
         struct Vertex {
@@ -19,18 +19,16 @@ class Graph {
             Vertex(int ids) : id(to_string(ids)) { index = -1; lowlink = -1; onStack = false; };
             Vertex(int idx, int link, int ids) : index(idx), lowlink(link), id(to_string(ids)) { onStack = false; };
 
-            bool operator!=(Vertex& other) {
-                return index != other.index && lowlink != other.lowlink && id != other.id && onStack != other.onStack;
+           
+            bool operator==(const Vertex& other) const {
+                return id == other.id; 
             }
 
-            // void operator=(Vertex& other) {
-            //     index = other.index;
-            //     lowlink = other.lowlink;
-            //     id = other.id;
-            //     onStack = other.onStack;
-            // }
+            bool operator!=(const Vertex& other) const {
+                return !(id == other.id);
+            }
         };
-        
+        // i think i had this error, not with vertex but idk why this even happens
         struct Edge {
             Vertex source;
             Vertex destination;
@@ -39,6 +37,13 @@ class Graph {
             Edge() { };
             Edge(Vertex src, Vertex dest) : source(src), destination(dest) { weight = 1; };
             Edge(Vertex src, Vertex dest, double wgt) : source(src), destination(dest), weight(wgt) {};
+        };
+
+        struct MyHash {
+            std::size_t operator()(const Vertex& v) const {
+                std::size_t h1 = std::hash<std::string>{}(v.id);
+                return h1;
+            }
         };
 
         Graph();
@@ -54,16 +59,9 @@ class Graph {
 
         void clear();
 
+    private:
+        std::unordered_map<Vertex, std::vector<Edge*>, MyHash> adjacencyList;
+        std::vector<Vertex> vertices;
+        std::unordered_map<Vertex, int, MyHash> vertI;
 
-        /**
-         * Member variables (NOTE: need to change these based on how we set up our variables)
-         * adjacencyList: unordered_map storing the vertex as a key, and a list of outgoing edge pointers as the value
-         * adjacencyMatrix: normalized boost::ublas matrix keeping track of outgoing edges; used for areAdjacent & pageRank algorithm
-         * vertexList: a list of all vertices, in order they are added to the adjacencyList
-         * vert_to_ind: unordered_map that stores a vertex as the key, and its associated index in vertexList as the value
-         */
-        
-        unordered_map<Vertex, std::vector<Edge*>> adjacencyList;
-        vector<Vertex> vertices;
-        unordered_map<Vertex, int> vertI;
 };
