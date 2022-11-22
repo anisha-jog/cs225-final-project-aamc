@@ -1,13 +1,11 @@
 #pragma once
 
-#include <iostream>
 #include <vector>
 #include <string>
 #include <unordered_map>
 #include <fstream>
 
 using namespace std;
-
 
 class Graph {
     public:
@@ -21,10 +19,7 @@ class Graph {
             Vertex(int ids) : id(to_string(ids)) { index = -1; lowlink = -1; onStack = false; };
             Vertex(int idx, int link, int ids) : index(idx), lowlink(link), id(to_string(ids)) { onStack = false; };
 
-            // sorry i'm not following?ok. it should be unique yes
-            //build separate class, overload operator () returns size_t takes in vertex.
-            //i believe i sawsomething online for that. i just declare it at the top of this file and that's ok right?
-            // 
+           
             bool operator==(const Vertex& other) const {
                 return id == other.id; 
             }
@@ -37,13 +32,12 @@ class Graph {
         struct Edge {
             Vertex source;
             Vertex destination;
-            double weight;
+            double weight = 1.0;
 
-            Edge() { weight = 1; };
+            Edge() { };
             Edge(Vertex src, Vertex dest) : source(src), destination(dest) { weight = 1; };
             Edge(Vertex src, Vertex dest, double wgt) : source(src), destination(dest), weight(wgt) {};
         };
-
 
         struct MyHash {
             std::size_t operator()(const Vertex& v) const {
@@ -54,8 +48,6 @@ class Graph {
 
         Graph();
         Graph(std::ifstream& fs);
-        ~Graph();
-        Graph(const Graph& other);
         bool operator==(const Graph& other) const;
         vector<Edge*> connectedEdges(Vertex v);
         Vertex getVertex(int i) { return vertices[i]; }
@@ -71,4 +63,5 @@ class Graph {
         std::unordered_map<Vertex, std::vector<Edge*>, MyHash> adjacencyList;
         std::vector<Vertex> vertices;
         std::unordered_map<Vertex, int, MyHash> vertI;
+
 };
