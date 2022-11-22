@@ -1,8 +1,6 @@
 #include "graph.h"
 
-Graph::~Graph() {
-    clear();
-}
+
 
 void Graph::clear() {
     vertI.clear();
@@ -13,26 +11,6 @@ void Graph::clear() {
     }
 }
 
-Graph::Graph(const Graph& other) {
-    unsigned size = other.adjacencyList.size();
-    std::vector<Edge *> temp;
-
-    for (auto entry : other.adjacencyList) {
-        temp.clear();
-        for (Edge * edge : entry.second) {
-            temp.push_back(new Graph::Edge(edge->source, edge->destination));
-        }
-        this->adjacencyList.insert(std::make_pair(entry.first, temp));
-    }
-
-    for (unsigned i = 0; i < size; i++) {
-        this->vertices.push_back(other.vertices[i]);
-    }
-
-    for (auto entry : vertI) {
-        this->vertI.insert(std::make_pair(entry.first, entry.second));
-    }
-}
 
 bool Graph::operator==(const Graph& other) const {
     unsigned size = other.adjacencyList.size();
@@ -43,8 +21,8 @@ bool Graph::operator==(const Graph& other) const {
         auto thisl = this->adjacencyList.at(entry.first);
         if (thisl.size() != entry.second.size()) return false;
         for (unsigned i = 0; i < entry.second.size(); i++) {
-            if (entry.second[i]->source != thisl[i]->source 
-                || entry.second[i]->destination != thisl[i]->destination) return false;
+            if (entry.second.at(i)->source != thisl.at(i)->source 
+                || entry.second.at(i)->destination != thisl.at(i)->destination) return false;
         }
     }
 
