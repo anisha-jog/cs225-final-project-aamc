@@ -1,13 +1,12 @@
 #pragma once
 
-#include <iostream>
 #include <vector>
 #include <string>
 #include <unordered_map>
 #include <fstream>
 
 using namespace std;
-
+//ok we cant do rule of 0 bc we have to deal with memory dumbass
 class Graph {
     public:
         struct Vertex {
@@ -19,22 +18,24 @@ class Graph {
             Vertex() { index = -1; lowlink = -1; id = -1; onStack = false; };
             Vertex(int ids) : id(to_string(ids)) { index = -1; lowlink = -1; onStack = false; };
             Vertex(int idx, int link, int ids) : index(idx), lowlink(link), id(to_string(ids)) { onStack = false; };
+
+            bool operator!=(Vertex& other) {
+                return index != other.index && lowlink != other.lowlink && id != other.id && onStack != other.onStack;
+            }
         };
         
         struct Edge {
             Vertex source;
             Vertex destination;
-            double weight;
+            double weight = 1.0;
 
-            Edge() { weight = 1; };
+            Edge() { };
             Edge(Vertex src, Vertex dest) : source(src), destination(dest) { weight = 1; };
             Edge(Vertex src, Vertex dest, double wgt) : source(src), destination(dest), weight(wgt) {};
         };
 
-        Graph() {};
+        Graph();
         Graph(std::ifstream& fs);
-        ~Graph();
-        Graph(const Graph& other);
         bool operator==(const Graph& other) const;
         vector<Edge*> connectedEdges(Vertex v);
         Vertex getVertex(int i) { return vertices[i]; }
@@ -46,8 +47,16 @@ class Graph {
 
         void clear();
 
-    private:
-        std::unordered_map<Vertex, std::vector<Edge*>> adjacencyList;
-        std::vector<Vertex> vertices;
-        std::unordered_map<Vertex, int> vertI;
+
+        /**
+         * Member variables
+         * adjacencyList: unordered_map storing the vertex as a key, and a list of outgoing edge pointers as the value
+         * adjacencyMatrix: normalized boost::ublas matrix keeping track of outgoing edges; used for areAdjacent & pageRank algorithm
+         * vertexList: a list of all vertices, in order they are added to the adjacencyList
+         * vert_to_ind: unordered_map that stores a vertex as the key, and its associated index in vertexList as the value
+         */
+        
+        unordered_map<Vertex, std::vector<Edge*>> adjacencyList;
+        vector<Vertex> vertices;
+        unordered_map<Vertex, int> vertI;
 };
