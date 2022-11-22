@@ -111,3 +111,5 @@ foreach(entrypoint IN LISTS assignment_entrypoints)
     add_executable(${entrypoint} ${entry_dir}/${entrypoint}.cpp)
     target_link_libraries(${entrypoint} PRIVATE libs src)
 endforeach()
+
+okay thank you so much. we've been stuck on this for days. tried that too. we get errors including iostream ans everything else

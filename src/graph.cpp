@@ -4,6 +4,8 @@ Graph::~Graph() {
     clear();
 }
 
+Graph::Graph() { }
+
 void Graph::clear() {
     vertI.clear();
     vertices.clear();
@@ -34,12 +36,13 @@ Graph::Graph(const Graph& other) {
     }
 }
 
-bool Graph::operator==(const Graph& other) const {
+bool Graph::operator==(const Graph& other) const { //oh actually we changed the structure of vertex recently. it was initially a string and noe we nee to access the id. yeah yeah i see ty!
+//yes that sho
     unsigned size = other.adjacencyList.size();
     
     if (this->adjacencyList.size() != size) return false;
 
-    for (auto entry : other.adjacencyList) {
+    for (auto entry : other.adjacencyList) { 
         auto thisl = this->adjacencyList.at(entry.first);
         if (thisl.size() != entry.second.size()) return false;
         for (unsigned i = 0; i < entry.second.size(); i++) {

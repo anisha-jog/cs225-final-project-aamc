@@ -8,6 +8,7 @@
 
 using namespace std;
 
+
 class Graph {
     public:
         struct Vertex {
@@ -19,8 +20,20 @@ class Graph {
             Vertex() { index = -1; lowlink = -1; id = -1; onStack = false; };
             Vertex(int ids) : id(to_string(ids)) { index = -1; lowlink = -1; onStack = false; };
             Vertex(int idx, int link, int ids) : index(idx), lowlink(link), id(to_string(ids)) { onStack = false; };
+
+            // sorry i'm not following?ok. it should be unique yes
+            //build separate class, overload operator () returns size_t takes in vertex.
+            //i believe i sawsomething online for that. i just declare it at the top of this file and that's ok right?
+            // 
+            bool operator==(const Vertex& other) const {
+                return id == other.id; 
+            }
+
+            bool operator!=(const Vertex& other) const {
+                return !(id == other.id);
+            }
         };
-        
+        // i think i had this error, not with vertex but idk why this even happens
         struct Edge {
             Vertex source;
             Vertex destination;
@@ -31,7 +44,15 @@ class Graph {
             Edge(Vertex src, Vertex dest, double wgt) : source(src), destination(dest), weight(wgt) {};
         };
 
-        Graph() {};
+
+        struct MyHash {
+            std::size_t operator()(const Vertex& v) const {
+                std::size_t h1 = std::hash<std::string>{}(v.id);
+                return h1;
+            }
+        };
+
+        Graph();
         Graph(std::ifstream& fs);
         ~Graph();
         Graph(const Graph& other);
@@ -47,7 +68,7 @@ class Graph {
         void clear();
 
     private:
-        std::unordered_map<Vertex, std::vector<Edge*>> adjacencyList;
+        std::unordered_map<Vertex, std::vector<Edge*>, MyHash> adjacencyList;
         std::vector<Vertex> vertices;
-        std::unordered_map<Vertex, int> vertI;
+        std::unordered_map<Vertex, int, MyHash> vertI;
 };
