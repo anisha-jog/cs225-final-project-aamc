@@ -1,9 +1,10 @@
 cmake_minimum_required(VERSION 3.10)
 
 # Assignment Information (these are the *only* things you need to change here between assignments)
-set(assignment_name "final-project") # Name of the assignment
+set(assignment_name "cs225-final-project-aamc") # Name of the assignment
 set(assignment_version 1.2022.12.0) # Version, where minor=semester_year, patch=semester_end_month, tweak=revision
-set(assignment_entrypoints "main" "tests") # Entrypoints to run the program
+set(assignment_entrypoints "main") # Entrypoints to run the program
+set(assignment_container "fa22") # Container we are targeting
 
 # Add color support to our messages.
 # See: https://stackoverflow.com/questions/18968979/how-to-get-colorized-output-with-cmake
@@ -66,9 +67,6 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -pedantic -Wall -Werror -Wfatal-errors -
 # Specify debug symbols and no optimizations for Debug builds.
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -D_GLIBCXX_DEBUG -O0 -gdwarf-4")
 
-# Specify additional clean files.
-set_property(DIRECTORY APPEND PROPERTY ADDITIONAL_CLEAN_FILES "${assignment_clean_rm}")
-
 # Add Catch2.
 # Note: Ubuntu 20.04 LTS does not have Catch2 on apt
 # See: https://github.com/catchorg/Catch2/issues/1383
@@ -89,9 +87,13 @@ else()
 endif()
 
 # Path definitions.
+set(lib_dir ${CMAKE_SOURCE_DIR}/lib)
 set(src_dir ${CMAKE_SOURCE_DIR}/src)
 set(tests_dir ${CMAKE_SOURCE_DIR}/tests)
 set(entry_dir ${CMAKE_SOURCE_DIR}/entry)
+
+# Run CMakeLists in lib_dir to build our required libraries.
+add_subdirectory(${lib_dir})
 
 # Run CMakeLists in src_dir to build the student's code.
 add_subdirectory(${src_dir})
@@ -111,5 +113,3 @@ foreach(entrypoint IN LISTS assignment_entrypoints)
     add_executable(${entrypoint} ${entry_dir}/${entrypoint}.cpp)
     target_link_libraries(${entrypoint} PRIVATE libs src)
 endforeach()
-
-okay thank you so much. we've been stuck on this for days. tried that too. we get errors including iostream ans everything else
