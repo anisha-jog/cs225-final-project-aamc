@@ -10,7 +10,7 @@ using Edge = Graph::Edge;
 using Vertex = Graph::Vertex;
 
 
-namespace Algos {
+namespace algos {
 
     /**
      * BREADTH FIRST SEARCH ALGORITHM

@@ -48,6 +48,7 @@ class Graph {
 
         Graph();
         Graph(std::ifstream& fs);
+        ~Graph();
         bool operator==(const Graph& other) const;
         vector<Edge*> connectedEdges(Vertex v);
         Vertex getVertex(int i) { return vertices[i]; }

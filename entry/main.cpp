@@ -4,7 +4,8 @@
 using namespace std;
     
 int main() {
-    ifstream dataset("web-Google.txt");
+    cout << "running main..." << endl;
+    ifstream dataset("../web-Google.txt");
     string dataread;
     if (dataset.is_open()) {
         dataset >> dataread;
