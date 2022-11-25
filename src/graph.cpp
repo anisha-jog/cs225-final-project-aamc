@@ -68,6 +68,12 @@ void Graph::insertEdge(Vertex v1, Vertex v2) {
     edges.insert(edges.begin(), new Edge(v1, v2));
 }
 
+vector<Edge*> Graph::incidentEdges(Vertex v) const {
+    // copying the edge vector?
+    vector<Edge*> edges = adjacencyList.at(v);
+    return edges;
+}
+
 void Graph::removeVertex(Vertex v) {
     // TODO: remove the vertex from all lists and delete data accordingly
 }

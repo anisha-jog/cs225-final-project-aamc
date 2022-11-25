@@ -72,7 +72,7 @@ class Graph {
          * incidentEdges returns a vector of all of the edges leaving a given vertex.
         */
         Vertex getVertex(int i) { return vertices[i]; }
-        vector<Edge*> incidentEdges(Vertex v) { return adjacencyList.at(v); }
+        vector<Edge*> incidentEdges(Vertex v) const;
 
         /**
          * Add or remove vertices and edges.
