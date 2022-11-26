@@ -1,23 +1,25 @@
 #include "graph.h"
 
+using Edge = Graph::Edge;
+using Vertex = Graph::Vertex;
+using namespace std;
+
 Graph::~Graph() {
     clear();
 }
-
-Graph::Graph() { }
 
 void Graph::clear() {
     vertI.clear();
     vertices.clear();
 
-    for (std::pair<Vertex, std::vector<Graph::Edge *>> child : adjacencyList) {
-        for (unsigned i = 0; i < child.second.size(); i++) if (child.second[i]) delete child.second[i];
+    for (std::pair<Vertex, vector<Edge*>> child : adjacencyList) {
+        // TODO: this is segfaulting, figure out why
+        for (int i = 0; i < (int)(child.second.size()); i++) delete child.second[i];
     }
 }
 
 
-bool Graph::operator==(const Graph& other) const { //oh actually we changed the structure of vertex recently. it was initially a string and noe we nee to access the id. yeah yeah i see ty!
-//yes that sho
+bool Graph::operator==(const Graph& other) const {
     unsigned size = other.adjacencyList.size();
     
     if (this->adjacencyList.size() != size) return false;
@@ -34,7 +36,6 @@ bool Graph::operator==(const Graph& other) const { //oh actually we changed the 
     return true;
 }
 
-// Creating the adjacency list
 Graph::Graph(std::ifstream& fs) {
     Vertex v1, v2;
     while (!fs.eof()) {
@@ -46,11 +47,11 @@ Graph::Graph(std::ifstream& fs) {
             vertices.push_back(v1);
         }
 
-        adjacencyList[v1].push_back(new Graph::Edge(v1, v2));
+        adjacencyList[v1].push_back(new Edge(v1, v2));
         
         if (adjacencyList.find(v2) == adjacencyList.end()) { 
-            adjacencyList[v2] = std::vector<Graph::Edge*>();
-            vertI.insert(std::make_pair(v2, vertI.size()));
+            adjacencyList[v2] = vector<Edge*>();
+            vertI.insert(std::make_pair(v2, vertI.size())); // essentially the same as vertI[v2] = vertI.size()?
             vertices.push_back(v2);
         }
     }
@@ -67,7 +68,21 @@ void Graph::insertEdge(Vertex v1, Vertex v2) {
     edges.insert(edges.begin(), new Edge(v1, v2));
 }
 
-std::vector<Graph::Edge*> Graph::incidentEdges(Vertex v) const {
-    std::vector<Graph::Edge*> incidentEdges = adjacencyList.at(v);
-    return incidentEdges;
+vector<Edge*> Graph::incidentEdges(Vertex v) const {
+    // copying the edge vector?
+    vector<Edge*> edges = adjacencyList.at(v);
+    return edges;
+}
+
+void Graph::removeVertex(Vertex v) {
+    // TODO: remove the vertex from all lists and delete data accordingly
+}
+
+void Graph::removeEdge(Vertex v1, Vertex v2) {
+    // TODO: remove the edge from the adjacency list and delete data accordingly
+}
+
+bool Graph::areAdjacent(Vertex v1, Vertex v2) {
+    // TODO - see note in graph.h.
+    return false;
 }

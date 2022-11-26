@@ -12,13 +12,20 @@ using Vertex = Graph::Vertex;
 
 namespace algos {
 
+    struct Hash {
+        std::size_t operator()(const Vertex v) const {
+            std::size_t h1 = std::hash<std::string>{}(v.id);
+            return h1;
+        }
+    };
+
     /**
      * BREADTH FIRST SEARCH ALGORITHM
      **/
-    vector<Vertex*> bfs(Graph graph, Vertex *start) {
-        unordered_map<Vertex*, int> visited;
-        vector<Vertex*> traversal;
-        queue<Vertex*> q;
+    vector<Vertex> bfs(Graph graph, Vertex start) {
+        unordered_map<Vertex, int, Hash> visited;
+        vector<Vertex> traversal;
+        queue<Vertex> q;
 
         // add start point to the queue
         visited[start] = 1;
@@ -27,17 +34,18 @@ namespace algos {
         
         while(!q.empty()) {
             // get all the edges that are connected to the first vertex and then pop it from the queue
-            vector<Edge*> connections = graph.connectedEdges(*q.front());
+            vector<Edge*> connections = graph.incidentEdges(q.front());
             q.pop();
 
             // loop through each connection of the vertex
             for (int i = 0; i < (int)(connections.size()); i++) {
                 // if the destination of the edge (connected vertex) isn't in the visited map, add it
-                if (visited.find(&connections[i]->destination) == visited.end()) {
+                if (visited.find(connections[i]->destination) == visited.end()) {
+                    // cout << "destination not in visited map" << endl;
                     // it goes next in the traversal, add it to the queue, and mark it in the visited map
-                    traversal.push_back(&connections[i]->destination);
-                    q.push(&connections[i]->destination);
-                    visited[&connections[i]->destination] = 1;
+                    traversal.push_back(connections[i]->destination);
+                    q.push(connections[i]->destination);
+                    visited[connections[i]->destination] = 1;
                 }
             }
         }
@@ -46,20 +54,22 @@ namespace algos {
         for (int i = 0; i < (int)graph.getSize(); i++) {
             // for any vertex that hasn't been visited yet, add it to the queue and go again
             // takes care of the groups that aren't connected to the start point
-            if (visited.find(&graph.getVertex(i)) == visited.end()) {
-                q.push(&graph.getVertex(i));
-                visited.at(&graph.getVertex(i)) = 1;
-                traversal.push_back(&graph.getVertex(i));
+            if (visited.find(graph.getVertex(i)) == visited.end()) {
+                // cout << "vertex has not been visited yet" << endl;
+                q.push(graph.getVertex(i));
+                visited[graph.getVertex(i)] = 1;
+                traversal.push_back(graph.getVertex(i));
 
                 while(!q.empty()) {
-                    std::vector<Edge*> connections = graph.connectedEdges(*q.front());
+                    std::vector<Edge*> connections = graph.incidentEdges(q.front());
                     q.pop();
                 
                     for (int i = 0; i < int(connections.size()); i++) {
-                        if (visited.find(&connections[i]->destination) == visited.end()) {
-                            traversal.push_back(&connections[i]->destination);
-                            q.push(&connections[i]->destination);
-                            visited[&connections[i]->destination] = 1;
+                        if (visited.find(connections[i]->destination) == visited.end()) {
+                            // cout << "destination has not been visited yet" << endl;
+                            traversal.push_back(connections[i]->destination);
+                            q.push(connections[i]->destination);
+                            visited[connections[i]->destination] = 1;
                         }
                     }
                 }  
@@ -77,19 +87,6 @@ namespace algos {
         return std::list<std::pair<Vertex, double>>();
     }
 
-
-    // Tarjan's Algorithm
-    vector<Vertex> tarjan(Graph graph) {
-        int idx = 0;
-        std::stack<Vertex> stack;
-
-        for (int i = 0; i < graph.getSize(); i++) {
-            if (graph.getVertex(i).index == -1) {
-                strongConnect(graph, graph.getVertex(i), stack, idx);
-            }
-        }
-    }
-
     // Helper function for Tarjan's Algorithm
     void strongConnect(Graph graph, Vertex v, std::stack<Vertex>& stack, int idx) {
         v.index = idx;
@@ -97,10 +94,10 @@ namespace algos {
         idx++;
         stack.push(v);
         v.onStack = true;
-        std::vector<Edge*> edges = graph.getEdges(v);
+        std::vector<Edge*> edges = graph.incidentEdges(v);
 
         // Consider the successors of v.
-        for (int j = 0; j < edges.size(); j++) {
+        for (int j = 0; j < (int)(edges.size()); j++) {
             Vertex dest = edges[j]->destination;
             if (dest.index == -1) {
                 // Vertex has not been visited; recurse.
@@ -141,5 +138,19 @@ namespace algos {
             // - - - -
 
         }
+    }
+
+    // Tarjan's Algorithm
+    vector<Vertex> tarjan(Graph graph) {
+        int idx = 0;
+        std::stack<Vertex> stack;
+
+        for (int i = 0; i < graph.getSize(); i++) {
+            if (graph.getVertex(i).index == -1) {
+                strongConnect(graph, graph.getVertex(i), stack, idx);
+            }
+        }
+
+        return vector<Vertex>();
     }
 }
