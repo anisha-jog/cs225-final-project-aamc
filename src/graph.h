@@ -72,6 +72,7 @@ class Graph {
          * incidentEdges returns a vector of all of the edges leaving a given vertex.
         */
         Vertex getVertex(int i) { return vertices[i]; }
+        std::vector<Graph::Vertex> getVertices() { return vertices; }
         vector<Edge*> incidentEdges(Vertex v) const;
 
         /**
