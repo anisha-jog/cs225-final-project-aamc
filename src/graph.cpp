@@ -64,29 +64,28 @@ bool Graph::operator==(const Graph& other) const {
 }
 
 Graph::Graph(std::ifstream& fs) {
+    Vertex v1, v2;
     while (!fs.eof()) {
-        cout << "reading from file" << endl;
+        // cout << "reading from file" << endl;
         string x, y;
         // stringstream str()
-        getline(fs, x, '\t');
-        getline(fs, y, '\n');
-        cout << x << " " << y << endl;
-        Vertex v1(x), v2(y);
+        getline(fs, v1.id, '\t');
+        getline(fs, v2.id, '\n');
         
         if (vertI.find(v1) == vertI.end()) { 
-            cout << "vertex not found" << endl;
+            // cout << "vertex not found" << endl;
             vertI[v1] = vertI.size();
             vertices.push_back(v1);
         }
 
-        cout << "adding to adjacency list: " << v1 << " " << v2 << endl;
+        // cout << "adding to adjacency list: " << v1 << " " << v2 << endl;
 
         adjacencyList[v1].push_back(new Graph::Edge(v1, v2));
 
-        cout << "added to adjacency list" << endl;
+        // cout << "added to adjacency list" << endl;
         
         if (adjacencyList.find(v2) == adjacencyList.end()) { 
-            cout << "vertex not in adjacency list" << endl;
+            // cout << "vertex not in adjacency list" << endl;
             adjacencyList[v2] = vector<Edge*>();
             vertI.insert(std::make_pair(v2, vertI.size())); // essentially the same as vertI[v2] = vertI.size()?
             vertices.push_back(v2);
