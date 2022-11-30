@@ -137,7 +137,7 @@ TEST_CASE("insert vertices in a simple graph ", "[simpleGraph][vertices][insertV
     REQUIRE(vertices.size() == 3);
 
     for (int i = 0; i < (int)vertices.size() && i < (int)correct.size(); i++) {
-        cout << correct[i] << endl;
+        // cout << correct[i] << endl;
         REQUIRE(std::count(vertices.begin(), vertices.end(), correct[i]) == 1);
     }
 }
@@ -164,20 +164,20 @@ TEST_CASE("simple graph incidence and adjacency", "[simpleGraph][incidentEdges][
 * The graph for these tests are in web.tsv
 */
 
-// TEST_CASE("vertices for connected graph is correct", "[constructor][vertices]") {
-//     ifstream file("../web.tsv");
-//     Graph graph(file);
-//     cout << "graph made" << endl;
-//     auto v = graph.getVertices();
-//     vector<int> actualLabels = {0, 1, 2, 3, 4, 5, 6};
-//     cout << "vertices gotten" << endl;
+TEST_CASE("vertices for connected graph is correct", "[constructor][vertices]") {
+    ifstream file("../web.tsv");
+    Graph graph(file);
+    cout << "graph made" << endl;
+    auto v = graph.getVertices();
+    vector<int> actualLabels = {0, 1, 2, 3, 4, 5, 6};
+    cout << "vertices gotten" << endl;
 
-//     REQUIRE(v.size() == actualLabels.size());
+    REQUIRE(v.size() == actualLabels.size());
     
-//     for (Vertex label : actualLabels) {
-//         REQUIRE(std::count(v.begin(), v.end(), label) == 1);
-//     }
-// }
+    for (Vertex label : actualLabels) {
+        REQUIRE(std::count(v.begin(), v.end(), label) == 1);
+    }
+}
 
 
 
