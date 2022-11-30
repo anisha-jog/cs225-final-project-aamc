@@ -8,6 +8,27 @@ Graph::~Graph() {
     clear();
 }
 
+Graph::Graph(const Graph& other) {
+    unsigned size = other.adjacencyList.size();
+    std::vector<Edge *> temp;
+
+    for (auto entry : other.adjacencyList) {
+        temp.clear();
+        for (Edge * edge : entry.second) {
+            temp.push_back(new Graph::Edge(edge->source, edge->destination));
+        }
+        this->adjacencyList.insert(std::make_pair(entry.first, temp));
+    }
+
+    for (unsigned i = 0; i < size; i++) {
+        this->vertices.push_back(other.vertices[i]);
+    }
+
+    for (auto entry : vertI) {
+        this->vertI.insert(std::make_pair(entry.first, entry.second));
+    }    
+}
+
 void Graph::clear() {
     vertI.clear();
     vertices.clear();
@@ -18,6 +39,12 @@ void Graph::clear() {
     }
 }
 
+Graph & Graph::operator=(const Graph & other) {
+    if (*this == other) return *this;
+    this->clear();
+    *this = Graph(other);
+    return *this;
+}
 
 bool Graph::operator==(const Graph& other) const {
     unsigned size = other.adjacencyList.size();
@@ -40,6 +67,7 @@ Graph::Graph(std::ifstream& fs) {
     while (!fs.eof()) {
         cout << "reading from file" << endl;
         string x, y;
+        // stringstream str()
         getline(fs, x, '\t');
         getline(fs, y, '\n');
         cout << x << " " << y << endl;
@@ -53,7 +81,7 @@ Graph::Graph(std::ifstream& fs) {
 
         cout << "adding to adjacency list: " << v1 << " " << v2 << endl;
 
-        adjacencyList[v1].push_back(new Edge(v1, v2));
+        adjacencyList[v1].push_back(new Graph::Edge(v1, v2));
 
         cout << "added to adjacency list" << endl;
         
@@ -64,6 +92,7 @@ Graph::Graph(std::ifstream& fs) {
             vertices.push_back(v2);
         }
     }
+    
 }
 
 void Graph::insertVertex(Vertex v) {
