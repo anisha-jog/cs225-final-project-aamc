@@ -6,10 +6,13 @@ To build the files, use the command:
 ```mkdir build
    cd build
    cmake ..
-   make```
+   make
+```
     
 After building the main executable from the main command, there are 2 main commands that can be run:
 ```./tests
-   ./main```
+   ./main
+   
+```
    
 Currently, running main will run the BFS algorithm.
