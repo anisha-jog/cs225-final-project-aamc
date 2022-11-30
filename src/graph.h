@@ -69,6 +69,8 @@ class Graph {
         Graph() {};
         Graph(std::ifstream& fs);
         ~Graph();
+        Graph(const Graph &other);
+        Graph & operator=(const Graph & other);
         bool operator==(const Graph& other) const;
         void clear();
 
@@ -78,6 +80,7 @@ class Graph {
         */
         Vertex getVertex(int i) { return vertices[i]; }
         std::vector<Graph::Vertex> getVertices() { return vertices; }
+        std::unordered_map<Vertex, std::vector<Edge*>, Hash> getAdjList() { return adjacencyList; }
         vector<Edge*> incidentEdges(Vertex v) const;
 
         /**

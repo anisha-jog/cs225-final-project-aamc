@@ -70,8 +70,8 @@ Graph DisconnectedGraph() {
  * A circular graph:
  *
  * 1 -> 2 -> 3
- * ^         |
- * |         v
+ *           |
+ *           v
  * 6 <- 5 <- 4
  * 
  */ 
@@ -90,7 +90,6 @@ Graph CircleGraph() {
     g.insertEdge(3, 4);
     g.insertEdge(4, 5);
     g.insertEdge(5, 6);
-    g.insertEdge(6, 1);
 
     return g;
 }
@@ -108,12 +107,12 @@ TEST_CASE("Equals operator", "[ruleof3]") {
     REQUIRE(!(g2 == g3));
 }
 
-// TEST_CASE("Copy constructor", "[ruleof3]") {
-//     Graph g1 = SimpleGraph();
-//     Graph g2(g1);
+TEST_CASE("Copy constructor", "[ruleof3]") {
+    Graph g1 = SimpleGraph();
+    Graph g2(g1);
 
-//     REQUIRE(g1 == g2);
-// }
+    REQUIRE(g1 == g2);
+}
 
 TEST_CASE("Assignment operator", "[ruleof3]") {
     Graph g1 = SimpleGraph();
@@ -143,45 +142,112 @@ TEST_CASE("insert vertices in a simple graph ", "[simpleGraph][vertices][insertV
     }
 }
 
-// TEST_CASE("simple graph incidence and adjacency", "[simpleGraph][incidentEdges][areAdjacent]") {
-//     Graph g = SimpleGraph();
+TEST_CASE("simple graph incidence and adjacency", "[simpleGraph][incidentEdges][areAdjacent]") {
+    Graph g = SimpleGraph();
 
-//     // incident edges size
-//     REQUIRE(g.incidentEdges(1).size() == 1);
-//     REQUIRE(g.incidentEdges(2).size() == 1);
-//     REQUIRE(g.incidentEdges(3).size() == 0);
+    // incident edges size
+    REQUIRE(g.incidentEdges(1).size() == 1);
+    REQUIRE(g.incidentEdges(2).size() == 1);
+    REQUIRE(g.incidentEdges(3).size() == 0);
 
-//     // incident edges contents
-//     REQUIRE(g.incidentEdges(1)[0]->source == 1);
-//     REQUIRE(g.incidentEdges(1)[0]->destination == 2);
+    // incident edges contents
+    REQUIRE(g.incidentEdges(1)[0]->source == 1);
+    REQUIRE(g.incidentEdges(1)[0]->destination == 2);
 
-//     REQUIRE(g.incidentEdges(2)[0]->source == 2);
-//     REQUIRE(g.incidentEdges(2)[0]->destination == 3);
-
-    
-//     // areAdjacent
-//     REQUIRE(g.areAdjacent(1, 2));
-//     REQUIRE(g.areAdjacent(2, 3));
-//     REQUIRE(!g.areAdjacent(1, 3));
-// }
+    REQUIRE(g.incidentEdges(2)[0]->source == 2);
+    REQUIRE(g.incidentEdges(2)[0]->destination == 3);
+}
 
 
 
 /*
-* The graph for these tests are in web-small.txt
+* The graph for these tests are in web.tsv
 */
 
-TEST_CASE("vertices for connected graph is correct", "[constructor][vertices]") {
-    // ifstream file("../web-small.txt");
-    // Graph graph(file);
-    // cout << "graph made" << endl;
-    // auto v = graph.getVertices();
-    // vector<int> actualLabels = {0, 1, 2, 3, 4, 5, 6};
-    // cout << "vertices gotten" << endl;
+// TEST_CASE("vertices for connected graph is correct", "[constructor][vertices]") {
+//     ifstream file("../web.tsv");
+//     Graph graph(file);
+//     cout << "graph made" << endl;
+//     auto v = graph.getVertices();
+//     vector<int> actualLabels = {0, 1, 2, 3, 4, 5, 6};
+//     cout << "vertices gotten" << endl;
 
-    // REQUIRE(v.size() == actualLabels.size());
+//     REQUIRE(v.size() == actualLabels.size());
     
-    // for (Vertex label : actualLabels) {
-    //     REQUIRE(std::count(v.begin(), v.end(), label) == 1);
-    // }
+//     for (Vertex label : actualLabels) {
+//         REQUIRE(std::count(v.begin(), v.end(), label) == 1);
+//     }
+// }
+
+
+
+/* BFS ALGORITHM TEST CASES */
+TEST_CASE("Test Circular BFS Traversal", "[BFS]") {
+    Graph graph = CircleGraph();
+    Vertex start = graph.getVertices().at(0);
+    std::vector<Vertex> result = algos::bfs(graph, start);
+
+    REQUIRE(result[0] == 1);
+    REQUIRE(result[1] == 2);
+    REQUIRE(result[2] == 3);
+    REQUIRE(result[3] == 4);
+    REQUIRE(result[4] == 5);
+    REQUIRE(result[5] == 6);
+}
+
+TEST_CASE("Test Disconnected BFS Traversal", "[BFS]") {
+    Graph graph = DisconnectedGraph();
+
+    Vertex start = graph.getVertices().at(0);
+    std::vector<Vertex> result = algos::bfs(graph, start);
+
+    REQUIRE(result[0] == 1);
+    REQUIRE(result[1] == 3);
+    REQUIRE(result[2] == 2);
+    REQUIRE(result[3] == 4);
+    REQUIRE(result[4] == 5);
+    REQUIRE(result[5] == 6);
+    REQUIRE(result[6] == 7);
+}
+
+TEST_CASE("BFS with One vertex", "[BFS]") {
+    Graph graph;
+    graph.insertVertex(1);
+
+    Vertex start = graph.getVertices().at(0);
+    std::vector<Vertex> result = algos::bfs(graph, start);
+
+    REQUIRE(result[0] == 1);
+}
+
+// TEST_CASE("Disconnected BFS with input stream", "[BFS]") {
+//     ifstream file("/workspaces/anushree/Desktop/cs225/cs225-final-project-aamc/web.txt");
+//     Graph graph(file);
+
+//     Vertex start = graph.getVertices().at(0);
+//     std::vector<Vertex> result = algos::bfs(graph, start);
+
+//     REQUIRE(result[0] == 1);
+//     REQUIRE(result[1] == 2);
+//     REQUIRE(result[2] == 3);
+//     REQUIRE(result[3] == 4);
+//     REQUIRE(result[4] == 5);
+//     REQUIRE(result[5] == 6);
+//     REQUIRE(result[6] == 7);
+//     REQUIRE(result[7] == 0);
+// }
+
+TEST_CASE("Test  Disconnected Graph starting in the middle of vertex List" , "[BFS][defaultConstructor][disconnectedGraph]") {
+    Graph graph = DisconnectedGraph();
+
+    Vertex start = graph.getVertices().at(4);
+    std::vector<Vertex> result = algos::bfs(graph, start);
+
+    REQUIRE(result[0] == 5);
+    REQUIRE(result[1] == 6);
+    REQUIRE(result[2] == 7);
+    REQUIRE(result[3] == 1);
+    REQUIRE(result[4] == 3);
+    REQUIRE(result[5] == 2);
+    REQUIRE(result[6] == 4);
 }
