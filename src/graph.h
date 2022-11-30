@@ -18,10 +18,16 @@ class Graph {
 
             Vertex() { index = -1; lowlink = -1; id = -1; onStack = false; };
             Vertex(int ids) : id(to_string(ids)) { index = -1; lowlink = -1; onStack = false; };
+            Vertex(string ids) : id(ids) { index = -1; lowlink = -1; onStack = false; };
             Vertex(int idx, int link, int ids) : index(idx), lowlink(link), id(to_string(ids)) { onStack = false; };
+            int getID() { return stoi(id); }
 
             bool operator==(const Vertex& other) const {
                 return id == other.id; 
+            }
+
+            bool operator==(const int& other) const {
+                return id == to_string(other);
             }
 
             bool operator!=(const Vertex& other) const {
@@ -29,7 +35,6 @@ class Graph {
             }
 
             friend ostream& operator<<(ostream& os, const Vertex& v) {
-                // cout << "Vertex << called" << endl;
                 os << v.id;
                 return os;
             }

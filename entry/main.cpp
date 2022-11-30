@@ -9,11 +9,6 @@ using namespace algos;
 int main() {
     cout << "Building graph..." << endl;
     ifstream dataset("../web-Google.txt");
-    // string dataread;
-    // if (dataset.is_open()) {
-    //     dataset >> dataread;
-    //     cout << dataread << endl;
-    // }
     Graph g(dataset);
 
     cout << "The graph's size is " << g.getSize() << endl;
