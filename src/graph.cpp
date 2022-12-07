@@ -5,10 +5,12 @@ using Vertex = Graph::Vertex;
 using namespace std;
 
 Graph::~Graph() {
+    // Destructor
     clear();
 }
 
 Graph::Graph(const Graph& other) {
+    // Copy constructor
     unsigned size = other.adjacencyList.size();
     std::vector<Edge *> temp;
 
@@ -30,6 +32,7 @@ Graph::Graph(const Graph& other) {
 }
 
 void Graph::clear() {
+    // 
     vertI.clear();
     vertices.clear();
 
@@ -64,49 +67,49 @@ bool Graph::operator==(const Graph& other) const {
 }
 
 Graph::Graph(std::ifstream& fs) {
+    // Reading the data from a file and populating the adjacency list
     Vertex v1, v2;
     while (!fs.eof()) {
-        // cout << "reading from file" << endl;
         string x, y;
-        // stringstream str()
         getline(fs, v1.id, '\t');
         getline(fs, v2.id, '\n');
         
         if (vertI.find(v1) == vertI.end()) { 
-            // cout << "vertex not found" << endl;
             vertI[v1] = vertI.size();
             vertices.push_back(v1);
         }
 
-        // cout << "adding to adjacency list: " << v1 << " " << v2 << endl;
 
         adjacencyList[v1].push_back(new Graph::Edge(v1, v2));
 
-        // cout << "added to adjacency list" << endl;
         
         if (adjacencyList.find(v2) == adjacencyList.end()) { 
-            // cout << "vertex not in adjacency list" << endl;
             adjacencyList[v2] = vector<Edge*>();
-            vertI.insert(std::make_pair(v2, vertI.size())); // essentially the same as vertI[v2] = vertI.size()?
+            vertI.insert(std::make_pair(v2, vertI.size()));
             vertices.push_back(v2);
         }
+        // if (v1.id > "5" || v2.id > "5") {
+        //     continue;
+        // }
     }
     
 }
 
 void Graph::insertVertex(Vertex v) {
+    // Inserting a vertex
     vertI[v] = vertI.size();
     vertices.push_back(v);
     adjacencyList[v] = std::vector<Edge *>();
 }
 
 void Graph::insertEdge(Vertex v1, Vertex v2) {
+    // Inserting an edge
     std::vector<Edge*> & edges = adjacencyList[v1];
     edges.insert(edges.begin(), new Edge(v1, v2));
 }
 
 vector<Edge*> Graph::incidentEdges(Vertex v) const {
-    // copying the edge vector?
+    // Copying the edge vector
     vector<Edge*> edges = adjacencyList.at(v);
     return edges;
 }
@@ -122,4 +125,24 @@ void Graph::removeEdge(Vertex v1, Vertex v2) {
 bool Graph::areAdjacent(Vertex v1, Vertex v2) {
     // TODO - see note in graph.h.
     return false;
+}
+
+void Graph::adjacencyMatrix() {
+    // Making the adjacency matrix from the adjacency list
+
+    double x;
+
+    indices.resize(adjacencyList.size());
+    values.resize(adjacencyList.size());
+
+    for (int i = 0; i < adjacencyList.size(); i++) {
+        if (adjacencyList[i].size() != 0) {
+            x = 1 / (double) adjacencyList[i].size();
+            for (int j = 0; j < adjacencyList.at(i).size(); j++) {
+                int ind = system(adjacencyList.at(i).at(j)->source.id.c_str());
+                indices.at(ind).push_back(i);
+                values.at(ind).push_back(x);
+            }
+        }
+    }
 }

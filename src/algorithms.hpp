@@ -4,6 +4,13 @@
 #include <vector>
 #include <list>
 #include <stack>
+#include <string>
+#include <cmath>
+#include <algorithm>
+#include <map>
+#include <set>
+#include <cstdio>
+#include <cstdlib>
 
 using namespace std;
 using Edge = Graph::Edge;
@@ -83,8 +90,51 @@ namespace algos {
 
     // Setup PageRank Algorithm
     // https://www.ccs.neu.edu/home/daikeshi/notes/PageRank.pdf
-    std::list<std::pair<Vertex, double>> pageRank(const Graph& graph,  double alpha=0.85, int iterations=1000, double tolerance=1e-7) { 
-        return std::list<std::pair<Vertex, double>>();
+    vector<double> pageRank(Graph& graph,  double alpha=0.85, int iterations=1000, double tolerance=1e-7) { 
+        vector<double> pr_vec;    
+        bool done = false;
+        int row;
+        double sum;
+
+        pr_vec.resize(graph.getIndices().size());
+        graph.getPR_Vec().resize(graph.getIndices().size(), 0);
+        graph.getPR_Vec()[0] = 1;
+
+        graph.adjacencyMatrix();
+        
+        while (!done) {
+    
+            // Calculating the sum of pr values for all of the nodes with no edge coming out of their adjacency lists
+
+            sum = 0;
+            for (unsigned long i = 0; i < graph.getAdjList().size(); i++) {
+                if (graph.getAdjList()[i].size() == 0) sum += graph.getPR_Vec()[i];
+            }
+            
+            sum /= (double) graph.getPR_Vec().size();
+
+            pr_vec.clear();
+            pr_vec.resize(graph.getPR_Vec().size(), sum);
+
+            for (unsigned long i = 0; i < graph.getPR_Vec().size(); i++) {
+                // Calculating the new values of pr_vec
+                sum = 0;
+                for (unsigned long j = 0; j < graph.getIndices()[i].size(); j++) {
+                    row = graph.getIndices()[i][j];
+                    sum += graph.getValues()[i][j] * graph.getPR_Vec()[row];
+                }
+                pr_vec[i] += sum;
+            }
+
+            // See if the new and old values are close enough to quit.
+            done = true;                
+            for (unsigned long i = 0; done && i < graph.getPR_Vec().size(); i++) {
+                if (graph.getPR_Vec()[i] - pr_vec[i] > tolerance || pr_vec[i] - graph.getPR_Vec()[i] > tolerance) done = false;
+            }
+            graph.getPR_Vec() = pr_vec; 
+        }
+
+        return graph.getPR_Vec();
     }
 
     // Helper function for Tarjan's Algorithm

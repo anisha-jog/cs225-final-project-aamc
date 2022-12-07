@@ -50,7 +50,6 @@ class Graph {
             Edge(Vertex src, Vertex dest, double wgt) : source(src), destination(dest), weight(wgt) {};
 
             friend ostream& operator<<(ostream& os, const Edge& e) {
-                // cout << "Edge << called" << endl;
                 os << e.source << " -> " << e.destination << " with weight " << e.weight;
                 return os;
             }
@@ -77,11 +76,12 @@ class Graph {
         /**
          * getVertex returns a vertex at the given index.
          * incidentEdges returns a vector of all of the edges leaving a given vertex.
+         * Helper functions to access member variables in algos namespace.
         */
         Vertex getVertex(int i) { return vertices[i]; }
+        vector<Edge*> incidentEdges(Vertex v) const;
         std::vector<Graph::Vertex> getVertices() { return vertices; }
         std::unordered_map<Vertex, std::vector<Edge*>, Hash> getAdjList() { return adjacencyList; }
-        vector<Edge*> incidentEdges(Vertex v) const;
 
         /**
          * Add or remove vertices and edges.
@@ -102,14 +102,32 @@ class Graph {
         */
         int getSize() { return vertices.size(); }
 
+        /**
+         * Creates the adjacency matrix.
+         * Helper functions to access member variables in algos namespace.
+        */
+        void adjacencyMatrix();
+        vector<vector<int>> getIndices() { return indices; }
+        vector<vector<double>> getValues() { return values; }
+        vector<double> getPR_Vec() { return pr_vec; }
+
     private:
         /*
          * Variables:
-         * - adjacencyList: an unordered map that stores a vertex as a key and all of its edges (pointers) as values.
-         * - vertices: a vector containing all of the vertices in the graph.
-         * - vertI: an unordered map that stores a vertex as a key and its corresponding index in the vertices vector as a value.
+         * - adjacencyList: An unordered map that stores a vertex as a key and all of its edges (pointers) as values.
+         * - vertices: A vector containing all of the vertices in the graph.
+         * - vertI: An unordered map that stores a vertex as a key and its corresponding index in the vertices vector as a value.
+         * 
+         * PageRank specific variables:
+         * indices: Sparse representation of matrix indices
+         * values: Sparse representation of matrix values
+         * pr_vec: The pagerank vector
         */
         std::unordered_map<Vertex, std::vector<Edge*>, Hash> adjacencyList;
         std::vector<Vertex> vertices;
         std::unordered_map<Vertex, int, Hash> vertI;
+
+        vector<vector<int>> indices;
+        vector<vector<double>> values;
+        vector<double> pr_vec;
 };
