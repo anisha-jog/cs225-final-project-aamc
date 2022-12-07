@@ -84,14 +84,13 @@ Graph::Graph(std::ifstream& fs) {
 
         // cout << "added to adjacency list" << endl;
         
-        if (adjacencyList.find(v2) == adjacencyList.end()) { 
+        if (adjacencyList.find(v2) == adjacencyList.end()) {
             // cout << "vertex not in adjacency list" << endl;
             adjacencyList[v2] = vector<Edge*>();
             vertI.insert(std::make_pair(v2, vertI.size())); // essentially the same as vertI[v2] = vertI.size()?
             vertices.push_back(v2);
         }
     }
-    
 }
 
 void Graph::insertVertex(Vertex v) {
