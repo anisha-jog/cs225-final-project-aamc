@@ -82,8 +82,8 @@ Graph::Graph(std::ifstream& fs) {
 
         adjacencyList[v1].push_back(new Graph::Edge(v1, v2));
 
-        
-        if (adjacencyList.find(v2) == adjacencyList.end()) { 
+        if (adjacencyList.find(v2) == adjacencyList.end()) {
+            // cout << "vertex not in adjacency list" << endl;
             adjacencyList[v2] = vector<Edge*>();
             vertI.insert(std::make_pair(v2, vertI.size()));
             vertices.push_back(v2);
@@ -92,7 +92,6 @@ Graph::Graph(std::ifstream& fs) {
         //     continue;
         // }
     }
-    
 }
 
 void Graph::insertVertex(Vertex v) {
