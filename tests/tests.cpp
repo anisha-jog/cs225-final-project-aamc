@@ -165,7 +165,8 @@ TEST_CASE("simple graph incidence and adjacency", "[simpleGraph][incidentEdges][
 */
 
 TEST_CASE("vertices for connected graph is correct", "[constructor][vertices]") {
-    ifstream file("../web.tsv");
+
+    string file("../web.tsv");
     Graph graph(file);
     cout << "graph made" << endl;
     auto v = graph.getVertices();
@@ -221,7 +222,7 @@ TEST_CASE("BFS with One vertex", "[BFS]") {
 }
 
 // TEST_CASE("Disconnected BFS with input stream", "[BFS]") {
-//     ifstream file("/workspaces/anushree/Desktop/cs225/cs225-final-project-aamc/web.txt");
+//     string file("/workspaces/anushree/Desktop/cs225/cs225-final-project-aamc/web.txt");
 //     Graph graph(file);
 
 //     Vertex start = graph.getVertices().at(0);
