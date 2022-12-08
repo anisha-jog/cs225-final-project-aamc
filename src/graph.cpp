@@ -135,10 +135,10 @@ void Graph::adjacencyMatrix() {
     indices.resize(adjacencyList.size());
     values.resize(adjacencyList.size());
 
-    for (int i = 0; i < adjacencyList.size(); i++) {
+    for (unsigned long i = 0; i < adjacencyList.size(); i++) {
         if (adjacencyList[i].size() != 0) {
             x = 1 / (double) adjacencyList[i].size();
-            for (int j = 0; j < adjacencyList.at(i).size(); j++) {
+            for (unsigned long j = 0; j < adjacencyList.at(i).size(); j++) {
                 int ind = system(adjacencyList.at(i).at(j)->source.id.c_str());
                 indices.at(ind).push_back(i);
                 values.at(ind).push_back(x);
