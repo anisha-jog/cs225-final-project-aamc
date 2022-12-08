@@ -165,6 +165,7 @@ TEST_CASE("simple graph incidence and adjacency", "[simpleGraph][incidentEdges][
 */
 
 TEST_CASE("vertices for connected graph is correct", "[constructor][vertices]") {
+
     string file("../web.tsv");
     Graph graph(file);
     cout << "graph made" << endl;

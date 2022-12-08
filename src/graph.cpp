@@ -98,6 +98,7 @@ Graph::Graph(string filename) {
             vertices.push_back(v2);
         }
     }
+
     cout << "file read" << endl;
     fs.close();
     createAdjM();
