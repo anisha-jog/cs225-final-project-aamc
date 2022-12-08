@@ -32,12 +32,11 @@ Graph::Graph(const Graph& other) {
 }
 
 void Graph::clear() {
-    // 
+    // helper function for the destructor
     vertI.clear();
     vertices.clear();
 
     for (std::pair<Vertex, vector<Edge*>> child : adjacencyList) {
-        // TODO: this is segfaulting, figure out why
         for (int i = 0; i < (int)(child.second.size()); i++) delete child.second[i];
     }
 }
@@ -66,19 +65,29 @@ bool Graph::operator==(const Graph& other) const {
     return true;
 }
 
-Graph::Graph(std::ifstream& fs) {
+Graph::Graph(string filename) {
     // Reading the data from a file and populating the adjacency list
     Vertex v1, v2;
+    ifstream fs;
+    fs.open(filename);
+    if (fs.is_open()) {
+        cout << "File opened successfully." << endl;
+    } else {
+        cout << "Error opening file." << endl;
+        return;
+    }
     while (!fs.eof()) {
-        string x, y;
-        getline(fs, v1.id, '\t');
-        getline(fs, v2.id, '\n');
+        // string x, y;
+        fs >> v1.id;
+        fs >> v2.id;
+        // std::getline(fs, x, '\t');
+        // std::getline(fs, y, '\n');
+        // cout << "Reading: " << x << " -> " << y << endl;
         
         if (vertI.find(v1) == vertI.end()) { 
             vertI[v1] = vertI.size();
             vertices.push_back(v1);
         }
-
 
         adjacencyList[v1].push_back(new Graph::Edge(v1, v2));
 
@@ -88,10 +97,11 @@ Graph::Graph(std::ifstream& fs) {
             vertI.insert(std::make_pair(v2, vertI.size()));
             vertices.push_back(v2);
         }
-        // if (v1.id > "5" || v2.id > "5") {
-        //     continue;
-        // }
     }
+    cout << "file read" << endl;
+    fs.close();
+    createAdjM();
+    // adjMatInd();
 }
 
 void Graph::insertVertex(Vertex v) {
@@ -126,7 +136,39 @@ bool Graph::areAdjacent(Vertex v1, Vertex v2) {
     return false;
 }
 
-void Graph::adjacencyMatrix() {
+void Graph::createAdjM() {
+    // Making the adjacency matrix from the adjacency list
+    cout << "making adjm" << endl;
+
+    // resize the adjacency matrix
+    int dim = adjacencyList.size();
+    adjacencyMatrix.resize(dim);
+    for (int i = 0; i < dim; i++) {
+        adjacencyMatrix[i].resize(dim);
+    }
+    cout << "matrix resized" << endl;
+
+    // initialize adjacency using our adjacency list
+    for(auto entry : adjacencyList) {
+        auto edges = entry.second;
+        int col = vertI[entry.first];
+        if(edges.size()) { // if it has edges
+            double val = 1.0/edges.size();
+            cout << "populizing col with connection weights" << endl;
+            for(auto edge : edges) {
+                adjacencyMatrix[vertI[edge->destination]][col] = val;
+            }
+        } else {
+            cout << "populizing col generally" << endl;
+            double val = 1.0/adjacencyList.size();
+            for(size_t row = 0; row < adjacencyList.size(); row++) {
+                adjacencyMatrix[row][col] = val;
+            }
+        }
+    }
+}
+
+void Graph::adjMatInd() {
     // Making the adjacency matrix from the adjacency list
 
     double x;
@@ -134,11 +176,11 @@ void Graph::adjacencyMatrix() {
     indices.resize(adjacencyList.size());
     values.resize(adjacencyList.size());
 
-    for (int i = 0; i < adjacencyList.size(); i++) {
+    for (int i = 0; i < (int)adjacencyList.size(); i++) {
         if (adjacencyList[i].size() != 0) {
             x = 1 / (double) adjacencyList[i].size();
-            for (int j = 0; j < adjacencyList.at(i).size(); j++) {
-                int ind = system(adjacencyList.at(i).at(j)->source.id.c_str());
+            for (int j = 0; j < (int)adjacencyList.at(i).size(); j++) {
+                int ind = adjacencyList.at(i).at(j)->source.getID();
                 indices.at(ind).push_back(i);
                 values.at(ind).push_back(x);
             }
