@@ -11,15 +11,12 @@ using namespace std;
 class Graph {
     public:
         struct Vertex {
-            int index;
-            int lowlink;
             string id;
             bool onStack;
 
-            Vertex() { index = -1; lowlink = -1; id = -1; onStack = false; };
-            Vertex(int ids) : id(to_string(ids)) { index = -1; lowlink = -1; onStack = false; };
-            Vertex(string ids) : id(ids) { index = -1; lowlink = -1; onStack = false; };
-            Vertex(int idx, int link, int ids) : index(idx), lowlink(link), id(to_string(ids)) { onStack = false; };
+            Vertex() { id = -1; };
+            Vertex(int ids) : id(to_string(ids)) {};
+            Vertex(string ids) : id(ids) {};
             int getID() { return stoi(id); }
 
             bool operator==(const Vertex& other) const {
@@ -66,7 +63,7 @@ class Graph {
          * Rule of three functions & helper functions.
         */
         Graph() {};
-        Graph(std::ifstream& fs);
+        Graph(string filename);
         ~Graph();
         Graph(const Graph &other);
         Graph & operator=(const Graph & other);
@@ -106,7 +103,9 @@ class Graph {
          * Creates the adjacency matrix.
          * Helper functions to access member variables in algos namespace.
         */
-        void adjacencyMatrix();
+        void createAdjM();
+        void adjMatInd();
+        vector<vector<double>> getAdjM() { return adjacencyMatrix; }
         vector<vector<int>> getIndices() { return indices; }
         vector<vector<double>> getValues() { return values; }
         vector<double> getPR_Vec() { return pr_vec; }
@@ -124,6 +123,7 @@ class Graph {
          * pr_vec: The pagerank vector
         */
         std::unordered_map<Vertex, std::vector<Edge*>, Hash> adjacencyList;
+        vector<vector<double>> adjacencyMatrix;
         std::vector<Vertex> vertices;
         std::unordered_map<Vertex, int, Hash> vertI;
 

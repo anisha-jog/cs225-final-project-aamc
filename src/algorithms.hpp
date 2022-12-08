@@ -3,14 +3,11 @@
 #include <queue>
 #include <vector>
 #include <list>
-#include <stack>
 #include <string>
 #include <cmath>
 #include <algorithm>
 #include <map>
-#include <set>
-#include <cstdio>
-#include <cstdlib>
+#include <numeric>
 
 using namespace std;
 using Edge = Graph::Edge;
@@ -90,7 +87,7 @@ namespace algos {
 
     // Setup PageRank Algorithm
     // https://www.ccs.neu.edu/home/daikeshi/notes/PageRank.pdf
-    vector<double> pageRank(Graph& graph,  double alpha=0.85, int iterations=1000, double tolerance=1e-7) { 
+    vector<double> pageRank(Graph& graph, double alpha=0.85, int iterations=1000, double tolerance=1e-7) { 
         vector<double> pr_vec;    
         bool done = false;
         int row;
@@ -99,8 +96,6 @@ namespace algos {
         pr_vec.resize(graph.getIndices().size());
         graph.getPR_Vec().resize(graph.getIndices().size(), 0);
         graph.getPR_Vec()[0] = 1;
-
-        graph.adjacencyMatrix();
         
         while (!done) {
     
@@ -137,70 +132,49 @@ namespace algos {
         return graph.getPR_Vec();
     }
 
-    // Helper function for Tarjan's Algorithm
-    void strongConnect(Graph graph, Vertex v, std::stack<Vertex>& stack, int idx) {
-        v.index = idx;
-        v.lowlink = idx;
-        idx++;
-        stack.push(v);
-        v.onStack = true;
-        std::vector<Edge*> edges = graph.incidentEdges(v);
+    list<pair<Vertex, double>> pgrank_test(Graph& graph, double alpha=0.85, int iterations=1000, double tolerance=1e-7) {
+        // Using the Markov Chains interpretation of PageRank, we will be using the following method:
+        // - create a vector x of equal probability, equivalent to the size of our graph
+        //   (this vector is the probability set of starting points, i.e. you start at a random site.)
+        // - apply the formula alpha * adjM + (1 - alpha) * x
+        //   (alpha denotes the probability that a user will click on a link from the page they are currently on.
+        //   this formula ensures that no connections are truly 0, as it is possible for a user to get bored and
+        //   move to a random page.)
+        // - for our number of iterations, compute new graph ^ iterations and multiply with starting vector
+        //   (our iterations are indicative of the number of pages the user will visit.)
+        //   (we will also make sure we are not hitting tolerance, i.e. if we hit tolerance then it is considered stable.)
+        // - sort and return PageRank vector
+        list<pair<Vertex, double>> page_list;
+        int n = graph.getSize();
+        vector<Vertex> vertices = graph.getVertices();
+        vector<vector<double>> adjm = graph.getAdjM();
 
-        // Consider the successors of v.
-        for (int j = 0; j < (int)(edges.size()); j++) {
-            Vertex dest = edges[j]->destination;
-            if (dest.index == -1) {
-                // Vertex has not been visited; recurse.
-                strongConnect(graph, dest, stack, idx);
-                if (dest.lowlink < v.lowlink) {
-                    v.lowlink = dest.lowlink;
-                }
-            } else if (dest.onStack) {
-                // Vertex is already in stack, and therefore has been visited. Index, rather, than lowlink, is not a mistake.
-                if (dest.index < v.lowlink) {
-                    v.lowlink = dest.index;
-                }
+        vector<double> x(n, 1.0 / n);
+
+        // here is where we apply our formula
+        for (int i = 0; i < (int)adjm.size(); i++) {
+            for (int j = 0; j < (int)adjm[i].size(); j++) {
+                adjm[i][j] = alpha * adjm[i][j] + (1-alpha) * x[i];
             }
         }
 
-        // Check if v is a root node
-        if (v.lowlink == v.index) {
+        vector<double> prev(n);
+        double diff = 0; // TODO: calculate Euclidean normalization for diff
 
-            // TODO: Create a new strongly connected component
-
-            // - - - -
-
-            Vertex pop;
-            
-            while (pop != v) {
-                pop = stack.top();
-                stack.pop();
-                pop.onStack = false;
-
-                // TODO: Add vertex to strongly connected component
-
-                // - - - -
-
-            }
-
-            // Output strongly connected component
-
-            // - - - -
-
-        }
-    }
-
-    // Tarjan's Algorithm
-    vector<Vertex> tarjan(Graph graph) {
-        int idx = 0;
-        std::stack<Vertex> stack;
-
-        for (int i = 0; i < graph.getSize(); i++) {
-            if (graph.getVertex(i).index == -1) {
-                strongConnect(graph, graph.getVertex(i), stack, idx);
-            }
+        while (diff >= tolerance && iterations > 0) {
+            prev = x;
+            // TODO: compute the inner product for our graph (G * original G)
+            // TODO: recompute diff
+            iterations--;
         }
 
-        return vector<Vertex>();
+        vector<int> idx(x.size());
+        std::iota(idx.begin(), idx.end(), 0);
+        stable_sort(idx.begin(), idx.end(), [&x](size_t a, size_t b) {return x[a] > x[b];});
+
+        for(size_t i : idx) {
+            page_list.emplace_back(make_pair(vertices[i], x[i]));
+        }
+        return page_list;
     }
 }
