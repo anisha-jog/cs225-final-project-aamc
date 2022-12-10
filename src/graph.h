@@ -104,11 +104,7 @@ class Graph {
          * Helper functions to access member variables in algos namespace.
         */
         void createAdjM();
-        void adjMatInd();
         vector<vector<double>> getAdjM() { return adjacencyMatrix; }
-        vector<vector<int>> getIndices() { return indices; }
-        vector<vector<double>> getValues() { return values; }
-        vector<double> getPR_Vec() { return pr_vec; }
 
     private:
         /*
@@ -126,8 +122,4 @@ class Graph {
         vector<vector<double>> adjacencyMatrix;
         std::vector<Vertex> vertices;
         std::unordered_map<Vertex, int, Hash> vertI;
-
-        vector<vector<int>> indices;
-        vector<vector<double>> values;
-        vector<double> pr_vec;
 };

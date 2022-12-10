@@ -97,12 +97,12 @@ Graph::Graph(string filename) {
             vertI.insert(std::make_pair(v2, vertI.size()));
             vertices.push_back(v2);
         }
+        // TODO: reduce scale
     }
 
-    cout << "file read" << endl;
+    // cout << "file read" << endl;
     fs.close();
     createAdjM();
-    // adjMatInd();
 }
 
 void Graph::insertVertex(Vertex v) {
@@ -139,7 +139,7 @@ bool Graph::areAdjacent(Vertex v1, Vertex v2) {
 
 void Graph::createAdjM() {
     // Making the adjacency matrix from the adjacency list
-    cout << "making adjm" << endl;
+    // cout << "making adjm" << endl;
 
     // resize the adjacency matrix
     int dim = adjacencyList.size();
@@ -147,7 +147,7 @@ void Graph::createAdjM() {
     for (int i = 0; i < dim; i++) {
         adjacencyMatrix[i].resize(dim);
     }
-    cout << "matrix resized" << endl;
+    // cout << "matrix resized" << endl;
 
     // initialize adjacency using our adjacency list
     for(auto entry : adjacencyList) {
@@ -155,35 +155,15 @@ void Graph::createAdjM() {
         int col = vertI[entry.first];
         if(edges.size()) { // if it has edges
             double val = 1.0/edges.size();
-            cout << "populizing col with connection weights" << endl;
+            // cout << "populizing col with connection weights" << endl;
             for(auto edge : edges) {
                 adjacencyMatrix[vertI[edge->destination]][col] = val;
             }
         } else {
-            cout << "populizing col generally" << endl;
+            // cout << "populizing col generally" << endl;
             double val = 1.0/adjacencyList.size();
             for(size_t row = 0; row < adjacencyList.size(); row++) {
                 adjacencyMatrix[row][col] = val;
-            }
-        }
-    }
-}
-
-void Graph::adjMatInd() {
-    // Making the adjacency matrix from the adjacency list
-
-    double x;
-
-    indices.resize(adjacencyList.size());
-    values.resize(adjacencyList.size());
-
-    for (int i = 0; i < (int)adjacencyList.size(); i++) {
-        if (adjacencyList[i].size() != 0) {
-            x = 1 / (double) adjacencyList[i].size();
-            for (int j = 0; j < (int)adjacencyList.at(i).size(); j++) {
-                int ind = adjacencyList.at(i).at(j)->source.getID();
-                indices.at(ind).push_back(i);
-                values.at(ind).push_back(x);
             }
         }
     }

@@ -84,55 +84,49 @@ namespace algos {
         return traversal;
     }
 
+    /**
+     * Helper function for multiplying matrices in PageRank.
+    */
+    vector<vector<double>> multiplyMatrices(vector<vector<double>> mat1, vector<vector<double>> mat2) {
+        // print matrices, for debugging
+        cout << "Matrix 1:" << endl;
+        for (int i = 0; i < (int)mat1.size(); i++) {
+            for (int j = 0; j < (int)mat1[i].size(); j++) {
+                cout << mat1[i][j] << " ";
+            }
+            cout << endl;
+        }
+        cout << "Matrix 2:" << endl;
+        for (int i = 0; i < (int)mat2.size(); i++) {
+            for (int j = 0; j < (int)mat2[i].size(); j++) {
+                cout << mat2[i][j] << " ";
+            }
+            cout << endl;
+        }
+        
+        vector<vector<double>> result;
+        cout << "Creating results matrix..." << endl;
+        for (int i = 0; i < (int)mat1.size(); i++) {
+            vector<double> m(mat2[0].size());
+            result.push_back(m);
+        }
+    
+        cout << "Calculating product..." << endl;
+        for (int i = 0; i < (int)mat1.size(); i++) {
+            for (int j = 0; j < (int)mat2[0].size(); j++) {
+                result[i][j] = 0;
+                for (int k = 0; k < (int)mat1[i].size(); k++) {
+                    result[i][j] += mat1[i][k] * mat2[k][j];
+                }
+            }
+        }
+        return result;
+    }
+
 
     // Setup PageRank Algorithm
     // https://www.ccs.neu.edu/home/daikeshi/notes/PageRank.pdf
-    vector<double> pageRank(Graph& graph, double alpha=0.85, int iterations=1000, double tolerance=1e-7) { 
-        vector<double> pr_vec;    
-        bool done = false;
-        int row;
-        double sum;
-
-        pr_vec.resize(graph.getIndices().size());
-        graph.getPR_Vec().resize(graph.getIndices().size(), 0);
-        graph.getPR_Vec()[0] = 1;
-        
-        while (!done) {
-    
-            // Calculating the sum of pr values for all of the nodes with no edge coming out of their adjacency lists
-
-            sum = 0;
-            for (unsigned long i = 0; i < graph.getAdjList().size(); i++) {
-                if (graph.getAdjList()[i].size() == 0) sum += graph.getPR_Vec()[i];
-            }
-            
-            sum /= (double) graph.getPR_Vec().size();
-
-            pr_vec.clear();
-            pr_vec.resize(graph.getPR_Vec().size(), sum);
-
-            for (unsigned long i = 0; i < graph.getPR_Vec().size(); i++) {
-                // Calculating the new values of pr_vec
-                sum = 0;
-                for (unsigned long j = 0; j < graph.getIndices()[i].size(); j++) {
-                    row = graph.getIndices()[i][j];
-                    sum += graph.getValues()[i][j] * graph.getPR_Vec()[row];
-                }
-                pr_vec[i] += sum;
-            }
-
-            // See if the new and old values are close enough to quit.
-            done = true;                
-            for (unsigned long i = 0; done && i < graph.getPR_Vec().size(); i++) {
-                if (graph.getPR_Vec()[i] - pr_vec[i] > tolerance || pr_vec[i] - graph.getPR_Vec()[i] > tolerance) done = false;
-            }
-            graph.getPR_Vec() = pr_vec; 
-        }
-
-        return graph.getPR_Vec();
-    }
-
-    list<pair<Vertex, double>> pgrank_test(Graph& graph, double alpha=0.85, int iterations=1000, double tolerance=1e-7) {
+    vector<pair<Vertex, double>> pageRank(Graph& graph, double alpha=0.85, int iterations=1000, double tolerance=1e-7) {
         // Using the Markov Chains interpretation of PageRank, we will be using the following method:
         // - create a vector x of equal probability, equivalent to the size of our graph
         //   (this vector is the probability set of starting points, i.e. you start at a random site.)
@@ -144,12 +138,14 @@ namespace algos {
         //   (our iterations are indicative of the number of pages the user will visit.)
         //   (we will also make sure we are not hitting tolerance, i.e. if we hit tolerance then it is considered stable.)
         // - sort and return PageRank vector
-        list<pair<Vertex, double>> page_list;
+        vector<pair<Vertex, double>> page_list;
         int n = graph.getSize();
         vector<Vertex> vertices = graph.getVertices();
         vector<vector<double>> adjm = graph.getAdjM();
 
         vector<double> x(n, 1.0 / n);
+
+        cout << "Applying alpha formula..." << endl;
 
         // here is where we apply our formula
         for (int i = 0; i < (int)adjm.size(); i++) {
@@ -161,19 +157,34 @@ namespace algos {
         vector<double> prev(n);
         double diff = 0; // TODO: calculate Euclidean normalization for diff
 
-        while (diff >= tolerance && iterations > 0) {
-            prev = x;
-            // TODO: compute the inner product for our graph (G * original G)
-            // TODO: recompute diff
-            iterations--;
+        // while (diff >= tolerance && iterations > 0) {
+        //     prev = x;
+        //     // TODO: compute the inner product for our graph (G * original G)
+        //     // TODO: recompute diff
+        //     iterations--;
+        // }
+        cout << "Performing iterations..." << endl;
+        for (int i = 0; i < iterations; i++) {
+            cout << "Iteration " << i << endl;
+            adjm = multiplyMatrices(adjm, adjm);
         }
 
-        vector<int> idx(x.size());
-        std::iota(idx.begin(), idx.end(), 0);
-        stable_sort(idx.begin(), idx.end(), [&x](size_t a, size_t b) {return x[a] > x[b];});
+        vector<vector<double>> y;
+        // transpose x
+        for (int i = 0; i < (int)x.size(); i++) {
+            vector<double> temp(1, x[i]);
+            y.push_back(temp);
+        }
+        y = multiplyMatrices(adjm, y);
+        cout << "The size of y is " << y.size() << endl;
 
+        vector<int> idx(y.size());
+        std::iota(idx.begin(), idx.end(), 0);
+        stable_sort(idx.begin(), idx.end(), [&y](size_t a, size_t b) {return y[a][0] > y[a][0];});
+
+        cout << "Creating vector..." << endl;
         for(size_t i : idx) {
-            page_list.emplace_back(make_pair(vertices[i], x[i]));
+            page_list.push_back(make_pair(vertices[i], y[i][0]));
         }
         return page_list;
     }
