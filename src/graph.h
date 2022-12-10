@@ -63,7 +63,7 @@ class Graph {
          * Rule of three functions & helper functions.
         */
         Graph() {};
-        Graph(string filename, int cap=10000);
+        Graph(string filename);
         ~Graph();
         Graph(const Graph &other);
         Graph & operator=(const Graph & other);
