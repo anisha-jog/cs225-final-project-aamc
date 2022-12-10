@@ -87,41 +87,56 @@ namespace algos {
     /**
      * Helper function for multiplying matrices in PageRank.
     */
-    vector<vector<double>> multiplyMatrices(vector<vector<double>> mat1, vector<vector<double>> mat2) {
-        // print matrices, for debugging
-        cout << "Matrix 1:" << endl;
-        for (int i = 0; i < (int)mat1.size(); i++) {
-            for (int j = 0; j < (int)mat1[i].size(); j++) {
-                cout << mat1[i][j] << " ";
-            }
-            cout << endl;
-        }
-        cout << "Matrix 2:" << endl;
-        for (int i = 0; i < (int)mat2.size(); i++) {
-            for (int j = 0; j < (int)mat2[i].size(); j++) {
-                cout << mat2[i][j] << " ";
-            }
-            cout << endl;
-        }
+    void multiplyMatrices(Graph& graph, vector<vector<double>> mat1, vector<vector<double>> mat2) {
+        // // print matrices, for debugging
+        // cout << "Matrix 1:" << endl;
+        // for (int i = 0; i < (int)mat1.size(); i++) {
+        //     for (int j = 0; j < (int)mat1[i].size(); j++) {
+        //         cout << mat1[i][j] << " ";
+        //     }
+        //     cout << endl;
+        // }
+        // cout << "Matrix 2:" << endl;
+        // for (int i = 0; i < (int)mat2.size(); i++) {
+        //     for (int j = 0; j < (int)mat2[i].size(); j++) {
+        //         cout << mat2[i][j] << " ";
+        //     }
+        //     cout << endl;
+        // }
         
-        vector<vector<double>> result;
-        cout << "Creating results matrix..." << endl;
-        for (int i = 0; i < (int)mat1.size(); i++) {
-            vector<double> m(mat2[0].size());
-            result.push_back(m);
-        }
+        // vector<vector<double>> result;
+        // cout << "Creating results matrix..." << endl;
+        // for (int i = 0; i < (int)mat1.size(); i++) {
+        //     vector<double> m(mat2[0].size());
+        //     result.push_back(m);
+        // }
     
-        cout << "Calculating product..." << endl;
-        for (int i = 0; i < (int)mat1.size(); i++) {
-            for (int j = 0; j < (int)mat2[0].size(); j++) {
-                result[i][j] = 0;
-                for (int k = 0; k < (int)mat1[i].size(); k++) {
-                    result[i][j] += mat1[i][k] * mat2[k][j];
-                }
-            }
-        }
-        return result;
+        // cout << "Calculating product..." << endl;
+        // for (int i = 0; i < (int)mat1.size(); i++) {
+        //     for (int j = 0; j < (int)mat2[0].size(); j++) {
+        //         result[i][j] = 0;
+        //         for (int k = 0; k < (int)mat1[i].size(); k++) {
+        //             result[i][j] += mat1[i][k] * mat2[k][j];
+        //         }
+        //     }
+        // }
+        // return result;
+
+        graph.CSR(mat1);
+        vector<double> v1 = graph.getValues();
+        vector<int> c1 = graph.getCol();
+        vector<int> r1 = graph.getRow();
+
+        graph.CSR(mat2);
+        vector<double> v2 = graph.getValues();
+        vector<int> c2 = graph.getCol();
+        vector<int> r2 = graph.getRow();
+
+        graph.matrixMult(r1, c1, v1, r2, c2, v2);
     }
+
+
+
 
 
     // Setup PageRank Algorithm
@@ -166,7 +181,7 @@ namespace algos {
         cout << "Performing iterations..." << endl;
         for (int i = 0; i < iterations; i++) {
             cout << "Iteration " << i << endl;
-            adjm = multiplyMatrices(adjm, adjm);
+            multiplyMatrices(graph, adjm, adjm);
         }
 
         vector<vector<double>> y;
@@ -175,8 +190,10 @@ namespace algos {
             vector<double> temp(1, x[i]);
             y.push_back(temp);
         }
-        y = multiplyMatrices(adjm, y);
-        cout << "The size of y is " << y.size() << endl;
+        multiplyMatrices(graph, adjm, y);
+        // cout << "The size of y is " << y.size() << endl;
+        cout << "The size of row is " << graph.getRow().size() << endl;
+        cout << "The size of col is " << graph.getCol().size() << endl;
 
         vector<int> idx(y.size());
         std::iota(idx.begin(), idx.end(), 0);

@@ -3,7 +3,7 @@ Overall, we accomplished our goals.
 # Our deliverables
 
 - Our makefiles runs as expected
-- We properly read in our Google web graph and built a graph based on it
+- We properly read in our Google web graph and built an adjacency list based on it
 - We have thoroughly tested our graph and algorithms for bugs and memory leaks
 
 # Algorithms & Traversals
@@ -21,5 +21,5 @@ BFS
 ```
 
 ```
-Pageerank
+PageRank
 ```
