@@ -87,6 +87,7 @@ namespace algos {
     /**
      * Helper function for multiplying matrices in PageRank.
     */
+    // vector<vector<double>> multiplyMatrices(vector<vector<double>> mat1, vector<vector<double>> mat2) {
     void multiplyMatrices(Graph& graph, vector<vector<double>> mat1, vector<vector<double>> mat2) {
         // // print matrices, for debugging
         // cout << "Matrix 1:" << endl;
@@ -110,7 +111,7 @@ namespace algos {
         //     vector<double> m(mat2[0].size());
         //     result.push_back(m);
         // }
-    
+        
         // cout << "Calculating product..." << endl;
         // for (int i = 0; i < (int)mat1.size(); i++) {
         //     for (int j = 0; j < (int)mat2[0].size(); j++) {
@@ -134,10 +135,6 @@ namespace algos {
 
         graph.matrixMult(r1, c1, v1, r2, c2, v2);
     }
-
-
-
-
 
     // Setup PageRank Algorithm
     // https://www.ccs.neu.edu/home/daikeshi/notes/PageRank.pdf
@@ -180,7 +177,8 @@ namespace algos {
         // }
         cout << "Performing iterations..." << endl;
         for (int i = 0; i < iterations; i++) {
-            cout << "Iteration " << i << endl;
+            cout << "Iteration " << i + 1 << endl;
+            // adjm = multiplyMatrices(adjm, adjm);
             multiplyMatrices(graph, adjm, adjm);
         }
 
@@ -197,12 +195,13 @@ namespace algos {
 
         vector<int> idx(y.size());
         std::iota(idx.begin(), idx.end(), 0);
-        stable_sort(idx.begin(), idx.end(), [&y](size_t a, size_t b) {return y[a][0] > y[a][0];});
+        stable_sort(idx.begin(), idx.end(), [&y](size_t a, size_t b) {return y[a][0] > y[b][0];});
 
         cout << "Creating vector..." << endl;
         for(size_t i : idx) {
             page_list.push_back(make_pair(vertices[i], y[i][0]));
         }
+        cout << endl;
         return page_list;
     }
 }

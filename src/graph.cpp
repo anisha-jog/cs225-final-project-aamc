@@ -84,6 +84,7 @@ Graph::Graph(string filename, int cap) {
         // std::getline(fs, y, '\n');
         // cout << "Reading: " << x << " -> " << y << endl;
 
+        // scales down the dataset
         if (v1.getID() > cap || v2.getID() > cap) continue;
         
         if (vertI.find(v1) == vertI.end()) { 
