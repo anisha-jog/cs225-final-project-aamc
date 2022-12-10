@@ -89,20 +89,20 @@ namespace algos {
     */
     vector<vector<double>> multiplyMatrices(vector<vector<double>> mat1, vector<vector<double>> mat2) {
         // print matrices, for debugging
-        cout << "Matrix 1:" << endl;
-        for (int i = 0; i < (int)mat1.size(); i++) {
-            for (int j = 0; j < (int)mat1[i].size(); j++) {
-                cout << mat1[i][j] << " ";
-            }
-            cout << endl;
-        }
-        cout << "Matrix 2:" << endl;
-        for (int i = 0; i < (int)mat2.size(); i++) {
-            for (int j = 0; j < (int)mat2[i].size(); j++) {
-                cout << mat2[i][j] << " ";
-            }
-            cout << endl;
-        }
+        // cout << "Matrix 1:" << endl;
+        // for (int i = 0; i < (int)mat1.size(); i++) {
+        //     for (int j = 0; j < (int)mat1[i].size(); j++) {
+        //         cout << mat1[i][j] << " ";
+        //     }
+        //     cout << endl;
+        // }
+        // cout << "Matrix 2:" << endl;
+        // for (int i = 0; i < (int)mat2.size(); i++) {
+        //     for (int j = 0; j < (int)mat2[i].size(); j++) {
+        //         cout << mat2[i][j] << " ";
+        //     }
+        //     cout << endl;
+        // }
         
         vector<vector<double>> result;
         cout << "Creating results matrix..." << endl;
@@ -120,6 +120,7 @@ namespace algos {
                 }
             }
         }
+        cout << endl;
         return result;
     }
 
@@ -165,7 +166,7 @@ namespace algos {
         // }
         cout << "Performing iterations..." << endl;
         for (int i = 0; i < iterations; i++) {
-            cout << "Iteration " << i << endl;
+            cout << "Iteration " << i + 1 << endl;
             adjm = multiplyMatrices(adjm, adjm);
         }
 
@@ -180,12 +181,13 @@ namespace algos {
 
         vector<int> idx(y.size());
         std::iota(idx.begin(), idx.end(), 0);
-        stable_sort(idx.begin(), idx.end(), [&y](size_t a, size_t b) {return y[a][0] > y[a][0];});
+        stable_sort(idx.begin(), idx.end(), [&y](size_t a, size_t b) {return y[a][0] > y[b][0];});
 
         cout << "Creating vector..." << endl;
         for(size_t i : idx) {
             page_list.push_back(make_pair(vertices[i], y[i][0]));
         }
+        cout << endl;
         return page_list;
     }
 }
