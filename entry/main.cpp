@@ -6,6 +6,9 @@
 using namespace std;
 using namespace algos;
     
+#define R 4
+#define C 5
+
 int main() {
     cout << "Building graph..." << endl;
     string dataset = "../web-Google.txt";
@@ -33,7 +36,7 @@ int main() {
     cout << "Traversal complete!" << endl << endl;
 
     cout << "Running PageRank..." << endl << endl;
-    vector<pair<Vertex, double>> vec = pageRank(g, 0.85, 10);
+    vector<pair<Vertex, double>> vec = pageRank(g, 0.85, 1);
 
     int num_pages = 10;
 
@@ -42,15 +45,14 @@ int main() {
         cout << vec[i].first << " " << vec[i].second << endl;
     }
 
-    // vector<vector<double>> adjm = g.getAdjM();
-
-    // for (auto row : adjm) {
+    // for (auto row : g.getValues()) {
     //     for (auto col : row) {
     //         cout << col << " ";
     //     }
     //     cout << endl;
     // }
 
+   
     return 0;
 }
 

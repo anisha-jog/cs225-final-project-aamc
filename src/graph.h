@@ -106,6 +106,13 @@ class Graph {
         void createAdjM();
         vector<vector<double>> getAdjM() { return adjacencyMatrix; }
 
+
+        bool CSR(vector<vector<double>> matrix);
+        vector<double> getValues() { return values; }
+        vector<int> getRow() { return row; }
+        vector<int> getCol() { return col; }
+        void matrixMult(vector<int> r1, vector<int> c1, vector<double> v1, vector<int> r2, vector<int> c2, vector<double> v2);
+
     private:
         /*
          * Variables:
@@ -122,4 +129,8 @@ class Graph {
         vector<vector<double>> adjacencyMatrix;
         std::vector<Vertex> vertices;
         std::unordered_map<Vertex, int, Hash> vertI;
+
+        vector<int> row;
+        vector<int> col;
+        vector<double> values;
 };
