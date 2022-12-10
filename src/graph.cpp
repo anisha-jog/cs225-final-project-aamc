@@ -100,9 +100,11 @@ Graph::Graph(string filename) {
         // TODO: reduce scale
     }
 
-    // cout << "file read" << endl;
+    cout << "file read" << endl;
     fs.close();
     createAdjM();
+    // sparseAdjacencyMatrix();
+    cout << "matrix created" << endl;
 }
 
 void Graph::insertVertex(Vertex v) {
@@ -167,4 +169,35 @@ void Graph::createAdjM() {
             }
         }
     }
+}
+
+bool Graph::CSR(vector<vector<double>> matrix) {
+
+    for (int i = 0; i < (int)matrix.size(); i++) {
+        for (int j = 0; j < (int)matrix[i].size(); j++) {
+            if (matrix[i][j] != 0) {
+                row.push_back(i);
+                col.push_back(j);
+                values.push_back(matrix[i][j]);
+            }
+        }
+    }
+    return true;
+}
+
+void Graph::matrixMult(vector<int> r1, vector<int> c1, vector<double> v1, vector<int> r2, vector<int> c2, vector<double> v2) {
+    vector<int> new_r, new_c;
+    vector<double> new_v;
+    for (unsigned long i = 0; i < r1.size() && i < r2.size(); i++) {
+        for (unsigned long j = 0; j < c1.size() && j < c2.size(); j++) {
+            if (r1[i] == r2[i] && c1[j] == c2[j]) {
+                new_r.push_back(r1[i]);
+                new_c.push_back(c1[j]);
+                new_v.push_back(r1[i] * c1[j]);
+            }
+        }
+    }
+    row = new_r;
+    col = new_c;
+    values = new_v;
 }

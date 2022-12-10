@@ -221,22 +221,21 @@ TEST_CASE("BFS with One vertex", "[BFS]") {
     REQUIRE(result[0] == 1);
 }
 
-// TEST_CASE("Disconnected BFS with input stream", "[BFS]") {
-//     string file("/workspaces/anushree/Desktop/cs225/cs225-final-project-aamc/web.txt");
-//     Graph graph(file);
+TEST_CASE("Disconnected BFS with input stream", "[BFS]") {
+    string file("../tests/web-connected.tsv");
+    Graph graph(file);
 
-//     Vertex start = graph.getVertices().at(0);
-//     std::vector<Vertex> result = algos::bfs(graph, start);
+    Vertex start = graph.getVertices().at(0);
+    std::vector<Vertex> result = algos::bfs(graph, start);
 
-//     REQUIRE(result[0] == 1);
-//     REQUIRE(result[1] == 2);
-//     REQUIRE(result[2] == 3);
-//     REQUIRE(result[3] == 4);
-//     REQUIRE(result[4] == 5);
-//     REQUIRE(result[5] == 6);
-//     REQUIRE(result[6] == 7);
-//     REQUIRE(result[7] == 0);
-// }
+    REQUIRE(result[0] == 0);
+    REQUIRE(result[1] == 1);
+    REQUIRE(result[2] == 2);
+    REQUIRE(result[3] == 3);
+    REQUIRE(result[4] == 4);
+    REQUIRE(result[5] == 5);
+    REQUIRE(result[6] == 6);
+}
 
 TEST_CASE("Test  Disconnected Graph starting in the middle of vertex List" , "[BFS][defaultConstructor][disconnectedGraph]") {
     Graph graph = DisconnectedGraph();
@@ -252,3 +251,6 @@ TEST_CASE("Test  Disconnected Graph starting in the middle of vertex List" , "[B
     REQUIRE(result[5] == 2);
     REQUIRE(result[6] == 4);
 }
+
+/* PAGERANK ALGORITHM TEST CASES */
+

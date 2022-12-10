@@ -6,9 +6,12 @@
 using namespace std;
 using namespace algos;
     
+#define R 4
+#define C 5
+
 int main() {
     cout << "Building graph..." << endl;
-    string dataset = "../web-Google.txt";
+    string dataset = "../tests/web-Google.tsv";
     Graph g(dataset);
 
     // cout << "The graph's size is " << g.getSize() << endl;
@@ -32,21 +35,20 @@ int main() {
 
     // cout << "Traversal complete!" << endl;
     cout << "PageRank..." << endl;
-    vector<pair<Vertex, double>> vec = pageRank(g, 0.85, 10);
+    vector<pair<Vertex, double>> vec = pageRank(g, 0.85, 1);
 
     for (unsigned long i = 0; i < vec.size(); i++) {
         cout << vec[i].first << " " << vec[i].second << endl;
     }
 
-    // vector<vector<double>> adjm = g.getAdjM();
-
-    // for (auto row : adjm) {
+    // for (auto row : g.getValues()) {
     //     for (auto col : row) {
     //         cout << col << " ";
     //     }
     //     cout << endl;
     // }
 
+   
     return 0;
 }
 
