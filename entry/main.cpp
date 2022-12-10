@@ -11,8 +11,8 @@ using namespace algos;
 
 int main() {
     cout << "Building graph..." << endl;
-    string dataset = "../tests/web-Google.tsv";
-    Graph g(dataset);
+    string dataset = "../web-Google.txt";
+    Graph g(dataset, 10000);
 
     // cout << "The graph's size is " << g.getSize() << endl;
 
