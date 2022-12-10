@@ -65,7 +65,7 @@ bool Graph::operator==(const Graph& other) const {
     return true;
 }
 
-Graph::Graph(string filename, int cap) {
+Graph::Graph(string filename) {
     // Reading the data from a file and populating the adjacency list
     Vertex v1, v2;
     ifstream fs;
@@ -83,9 +83,6 @@ Graph::Graph(string filename, int cap) {
         // std::getline(fs, x, '\t');
         // std::getline(fs, y, '\n');
         // cout << "Reading: " << x << " -> " << y << endl;
-
-        // scales down the dataset
-        if (v1.getID() > cap || v2.getID() > cap) continue;
         
         if (vertI.find(v1) == vertI.end()) { 
             vertI[v1] = vertI.size();
@@ -100,6 +97,7 @@ Graph::Graph(string filename, int cap) {
             vertI.insert(std::make_pair(v2, vertI.size()));
             vertices.push_back(v2);
         }
+        // TODO: reduce scale
     }
 
     cout << "file read" << endl;
