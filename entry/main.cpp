@@ -8,7 +8,7 @@ using namespace algos;
     
 int main() {
     cout << "Building graph..." << endl;
-    string dataset = "../web.tsv";
+    string dataset = "../web-Google.txt";
     Graph g(dataset);
 
     // cout << "The graph's size is " << g.getSize() << endl;
@@ -31,32 +31,16 @@ int main() {
     // cout << endl;
 
     // cout << "Traversal complete!" << endl;
-    // vector<double> vec = pageRank(g, 0.85, 500);
+    cout << "PageRank..." << endl;
+    vector<pair<Vertex, double>> vec = pageRank(g, 0.85, 10);
 
-    // for (unsigned long i = 0; i < 5; i++) {
-    //     cout << vec.at(i) << " " ;
-    // }
+    for (unsigned long i = 0; i < vec.size(); i++) {
+        cout << vec[i].first << " " << vec[i].second << endl;
+    }
 
     // vector<vector<double>> adjm = g.getAdjM();
 
     // for (auto row : adjm) {
-    //     for (auto col : row) {
-    //         cout << col << " ";
-    //     }
-    //     cout << endl;
-    // }
-
-    // vector<vector<int>> indx = g.getIndices();
-    // vector<vector<double>> vals = g.getValues();
-
-    // for (auto row : indx) {
-    //     for (auto col : row) {
-    //         cout << col << " ";
-    //     }
-    //     cout << endl;
-    // }
-    // cout << endl;
-    // for (auto row : vals) {
     //     for (auto col : row) {
     //         cout << col << " ";
     //     }
