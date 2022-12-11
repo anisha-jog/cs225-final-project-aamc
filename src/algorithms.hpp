@@ -100,21 +100,21 @@ namespace algos {
      * @return 2D matrix product.
     */
     vector<vector<double>> multiplyMatrices(Graph& graph, vector<vector<double>> mat1, vector<vector<double>> mat2) {
-        // print matrices, for debugging
-        cout << "Matrix 1:" << endl;
-        for (int i = 0; i < (int)mat1.size(); i++) {
-            for (int j = 0; j < (int)mat1[i].size(); j++) {
-                cout << mat1[i][j] << " ";
-            }
-            cout << endl;
-        }
-        cout << "Matrix 2:" << endl;
-        for (int i = 0; i < (int)mat2.size(); i++) {
-            for (int j = 0; j < (int)mat2[i].size(); j++) {
-                cout << mat2[i][j] << " ";
-            }
-            cout << endl;
-        }
+        // // print matrices, for debugging
+        // cout << "Matrix 1:" << endl;
+        // for (int i = 0; i < (int)mat1.size(); i++) {
+        //     for (int j = 0; j < (int)mat1[i].size(); j++) {
+        //         cout << mat1[i][j] << " ";
+        //     }
+        //     cout << endl;
+        // }
+        // cout << "Matrix 2:" << endl;
+        // for (int i = 0; i < (int)mat2.size(); i++) {
+        //     for (int j = 0; j < (int)mat2[i].size(); j++) {
+        //         cout << mat2[i][j] << " ";
+        //     }
+        //     cout << endl;
+        // }
         
         vector<vector<double>> result;
         cout << "Creating results matrix..." << endl;
@@ -178,22 +178,22 @@ namespace algos {
 
         vector<double> x(n, 1.0 / n);
 
-        // cout << "Applying alpha formula..." << endl;
+        cout << "Applying alpha formula..." << endl;
 
-        // // here is where we apply our formula
-        // for (int i = 0; i < (int)adjm.size(); i++) {
-        //     for (int j = 0; j < (int)adjm[i].size(); j++) {
-        //         adjm[i][j] = alpha * adjm[i][j] + (1-alpha) * x[i];
-        //     }
-        // }
-
+        // here is where we apply our formula
         for (int i = 0; i < (int)adjm.size(); i++) {
             for (int j = 0; j < (int)adjm[i].size(); j++) {
-                cout << adjm[i][j] << " ";
+                adjm[i][j] = alpha * adjm[i][j] + (1-alpha) * x[i];
             }
-            cout << endl;
         }
-        cout << endl;
+
+        // for (int i = 0; i < (int)adjm.size(); i++) {
+        //     for (int j = 0; j < (int)adjm[i].size(); j++) {
+        //         cout << adjm[i][j] << " ";
+        //     }
+        //     cout << endl;
+        // }
+        // cout << endl;
 
         cout << "Performing iterations..." << endl;
         for (int i = 0; i < iterations; i++) {
@@ -213,29 +213,28 @@ namespace algos {
         // cout << "The size of col is " << graph.getCol().size() << endl;
 
         vector<int> idx(y.size());
-        for (int i = 0; i < (int)y.size(); i++) {
-            cout << vertices[i] << " is at index " << graph.getIndex(vertices[i]) << endl;
+        for (int i = 0; i < (int)idx.size(); i++) {
             idx[graph.getIndex(vertices[i])] = vertices[i].getID();
         }
 
-        for (int i = 0; i < (int)y.size(); i++) {
-            for (int j = 0; j < (int)y[i].size(); j++) {
-                cout << y[i][j] << " ";
-            }
-            cout << endl;
-        }
-        cout << endl;
+        // for (int i = 0; i < (int)y.size(); i++) {
+        //     for (int j = 0; j < (int)y[i].size(); j++) {
+        //         cout << y[i][j] << " ";
+        //     }
+        //     cout << endl;
+        // }
+        // cout << endl;
 
-        for (int i = 0; i < (int)idx.size(); i++) {
-            cout << idx[i] << " ";
-        }
-        cout << endl << endl;
-
-        stable_sort(idx.begin(), idx.end(), [&y](size_t a, size_t b) {return y[a][0] > y[b][0];});
+        // for (int i = 0; i < (int)idx.size(); i++) {
+        //     cout << idx[i] << " ";
+        // }
+        // cout << endl << endl;
+        
+        stable_sort(idx.begin(), idx.end(), [&y, &graph](int a, int b) { return y[graph.getIndex(a)][0] > y[graph.getIndex(b)][0];});
 
         cout << "Creating vector..." << endl;
-        for(size_t i : idx) {
-            page_list.push_back(make_pair(vertices[i], y[i][0]));
+        for(auto i : idx) {
+            page_list.push_back(make_pair(vertices[graph.getIndex(i)], y[graph.getIndex(i)][0]));
         }
         return page_list;
     }

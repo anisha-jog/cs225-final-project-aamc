@@ -8,13 +8,20 @@ using namespace algos;
 
 int main() {
     // NOTE: change path in dataset string to change the input graph file.
-    cout << "Building graph..." << endl;
-    string dataset = "../input/web-disconnected.tsv";
+    string dataset = "";
+    cout << "Input the name of the file you want to read from. Please ensure that this file is in the input folder." << endl;
+    cin >> dataset;
 
+    if (dataset == "") {
+        cout << "Sorry, we can't build a graph without an input!" << endl;
+        return 0;
+    }
+
+    cout << "Building graph..." << endl;
     // NOTE: change the number to change the maximum number of nodes.
     // Add in a third argument to change the number of lines you want to read from file.
     // Lower numbers are recommended for low-performance computers.
-    Graph g(dataset, 10000);
+    Graph g("../input/" + dataset, 10000);
 
     cout << "The graph's size is " << g.getSize() << endl;
 
@@ -37,9 +44,11 @@ int main() {
     // cout << bfs_traversal.at(bfs_traversal.size()-1) << endl;
 
     // NOTE: to change output file, change the path in bfs_file
+    cout << "Input the name of the file you want to write the BFS traversal to. Please ensure that this file is in the output folder." << endl;
+    string bfs_file = "";
+    cin >> bfs_file;
     cout << "Writing BFS traversal to file..." << endl;
-    string bfs_file = "../output/bfs-output.txt";
-    BFSWriteToFile(bfs_traversal, bfs_file);
+    BFSWriteToFile(bfs_traversal, "../output/" + bfs_file);
     cout << "Traversal written to " << bfs_file << endl << endl;
 
     std::unordered_map<Vertex, std::vector<Edge*>, Graph::Hash> adjlist = g.getAdjList();
@@ -64,8 +73,8 @@ int main() {
     // NOTE: change the third number in the pagerank function (num iterations) to change the iterations of the PageRank algorithm.
     // Lower numbers are recommended for low-performance computers.
     // Change the second number to change the alpha value and see how it affects the algorithm.
-    cout << "PageRank..." << endl;
-    vector<pair<Vertex, double>> vec = pageRank(g, 0.85, 1);
+    cout << "Running PageRank..." << endl;
+    vector<pair<Vertex, double>> vec = pageRank(g, 0.85, 10);
     cout << "The PageRank vector is " << vec.size() << " pages long." << endl;
 
     for (unsigned long i = 0; i < vec.size(); i++) {
@@ -73,9 +82,11 @@ int main() {
     }
     
     // NOTE: to change output file, change the path in pgrank_file
+    cout << "Input the name of the file you want to write the PageRank vector to. Please ensure that this file is in the output folder." << endl;
+    string pgrank_file = "";
+    cin >> pgrank_file;
     cout << "Writing PageRank list to file..." << endl;
-    string pgrank_file = "../output/pagerank-output.txt";
-    PageRankWriteToFile(vec, pgrank_file);
+    PageRankWriteToFile(vec, "../output/" + pgrank_file);
     cout << "PageRank list written to " << pgrank_file << endl << endl;
    
     return 0;

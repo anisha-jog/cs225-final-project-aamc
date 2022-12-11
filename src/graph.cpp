@@ -141,7 +141,7 @@ vector<Edge*> Graph::incidentEdges(Vertex v) const {
 
 void Graph::createAdjM() {
     // Making the adjacency matrix from the adjacency list
-    // cout << "making adjm" << endl;
+    cout << "making adjm" << endl;
 
     // resize the adjacency matrix
     int dim = adjacencyList.size();
@@ -149,7 +149,7 @@ void Graph::createAdjM() {
     for (int i = 0; i < dim; i++) {
         adjacencyMatrix[i].resize(dim);
     }
-    // cout << "matrix resized" << endl;
+    cout << "matrix resized" << endl;
 
     // initialize adjacency using our adjacency list
     for(auto entry : adjacencyList) {
@@ -158,18 +158,18 @@ void Graph::createAdjM() {
         cout << entry.first << " has " << edges.size() << " outgoing edges" << endl;
         if(edges.size() > 0) { // if it has outgoing edges
             double val = 1.0/edges.size();
-            // cout << "populizing col with connection weights" << endl;
+            cout << "populizing col with connection weights" << endl;
             for(auto edge : edges) {
                 adjacencyMatrix[vertI[edge->destination]][col] = val;
                 cout << "inserting " << val << " at " << vertI[edge->destination] << ", " << col << endl;
             }
         } else {
-            // // cout << "populizing col generally" << endl;
-            // double val = 1.0/adjacencyList.size();
-            // for(size_t row = 0; row < adjacencyList.size(); row++) {
-            //     adjacencyMatrix[row][col] = val;
-            //     cout << "inserting " << val << " at " << row << ", " << col << endl;
-            // }
+            cout << "populizing col generally" << endl;
+            double val = 1.0/adjacencyList.size();
+            for(size_t row = 0; row < adjacencyList.size(); row++) {
+                adjacencyMatrix[row][col] = val;
+                cout << "inserting " << val << " at " << row << ", " << col << endl;
+            }
         }
     }
 }

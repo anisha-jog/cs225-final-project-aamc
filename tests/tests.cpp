@@ -157,11 +157,11 @@ TEST_CASE("simple graph incidence and adjacency", "[simpleGraph][incidentEdges][
 
 
 /*
-* The graph for these tests are in web.tsv
+* The graph for these tests are in web-connected.tsv
 */
 TEST_CASE("vertices for connected graph are correct", "[constructor][vertices]") {
 
-    string file("../input/web.tsv");
+    string file("../input/web-connected.tsv");
     Graph graph(file);
     cout << "graph made" << endl;
     auto v = graph.getVertices();
@@ -265,4 +265,16 @@ TEST_CASE("PageRank on graph with no edges is all the same", "[PageRank][disconn
     for (int i = 0; i < (int)v.size(); i++) {
         REQUIRE(v[i].second == 1.0 / v.size());
     }
+}
+
+TEST_CASE("PageRank on small graph", "[PageRank]") {
+    Graph g("../input/web-graph-test.txt");
+
+    vector<pair<Vertex, double>> v = pageRank(g);
+
+    REQUIRE(v[0].first.getID() == 4);
+    REQUIRE(v[1].first.getID() == 1);
+    REQUIRE(v[2].first.getID() == 3);
+    REQUIRE(v[3].first.getID() == 2);
+    REQUIRE(v[4].first.getID() == 0);
 }
