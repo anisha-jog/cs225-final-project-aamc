@@ -63,7 +63,7 @@ class Graph {
          * Rule of three functions & helper functions.
         */
         Graph() {};
-        Graph(string filename);
+        Graph(string filename, int cap=10000, int lines=-1);
         ~Graph();
         Graph(const Graph &other);
         Graph & operator=(const Graph & other);
@@ -76,6 +76,7 @@ class Graph {
          * Helper functions to access member variables in algos namespace.
         */
         Vertex getVertex(int i) { return vertices[i]; }
+        int getIndex(Vertex v) { return vertI[v]; }
         vector<Edge*> incidentEdges(Vertex v) const;
         std::vector<Graph::Vertex> getVertices() { return vertices; }
         std::unordered_map<Vertex, std::vector<Edge*>, Hash> getAdjList() { return adjacencyList; }
@@ -85,14 +86,6 @@ class Graph {
         */
         void insertVertex(Vertex v);
         void insertEdge(Vertex v1, Vertex v2);
-        void removeVertex(Vertex v);
-        void removeEdge(Vertex v1, Vertex v2);
-
-        /**
-         * Determines if two vertices are adjacent to each other.
-         * NOTE: determine if our implementation needs this.
-        */
-        bool areAdjacent(Vertex v1, Vertex v2);
 
         /**
          * Get the number of vertices of the whole graph.
@@ -104,6 +97,7 @@ class Graph {
          * Helper functions to access member variables in algos namespace.
         */
         void createAdjM();
+        void AdjMatFlat();
         vector<vector<double>> getAdjM() { return adjacencyMatrix; }
 
 
