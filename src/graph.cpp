@@ -65,24 +65,33 @@ bool Graph::operator==(const Graph& other) const {
     return true;
 }
 
-Graph::Graph(string filename) {
+Graph::Graph(string filename, int cap, int lines) {
     // Reading the data from a file and populating the adjacency list
     Vertex v1, v2;
     ifstream fs;
     fs.open(filename);
+    int l = 0;
+
     if (fs.is_open()) {
         cout << "File opened successfully." << endl;
     } else {
         cout << "Error opening file." << endl;
         return;
     }
+
+    cout << "Vertex cap: " << cap << " Line limit: " << lines << endl;
     while (!fs.eof()) {
+        if (lines >= 0 && l >= lines) break;
+
         // string x, y;
         fs >> v1.id;
         fs >> v2.id;
+        l++;
         // std::getline(fs, x, '\t');
         // std::getline(fs, y, '\n');
         // cout << "Reading: " << x << " -> " << y << endl;
+
+        if (v1.getID() > cap || v2.getID() > cap) continue;
         
         if (vertI.find(v1) == vertI.end()) { 
             vertI[v1] = vertI.size();
@@ -97,7 +106,11 @@ Graph::Graph(string filename) {
             vertI.insert(std::make_pair(v2, vertI.size()));
             vertices.push_back(v2);
         }
-        // TODO: reduce scale
+    }
+
+    cout << "vertices:" << endl;
+    for (int i = 0; i < (int)vertices.size(); i++) {
+        cout << vertices.at(i) << " is at index " << vertI[vertices.at(i)] << endl;
     }
 
     cout << "file read" << endl;
@@ -126,22 +139,9 @@ vector<Edge*> Graph::incidentEdges(Vertex v) const {
     return edges;
 }
 
-void Graph::removeVertex(Vertex v) {
-    // TODO: remove the vertex from all lists and delete data accordingly
-}
-
-void Graph::removeEdge(Vertex v1, Vertex v2) {
-    // TODO: remove the edge from the adjacency list and delete data accordingly
-}
-
-bool Graph::areAdjacent(Vertex v1, Vertex v2) {
-    // TODO - see note in graph.h.
-    return false;
-}
-
 void Graph::createAdjM() {
     // Making the adjacency matrix from the adjacency list
-    // cout << "making adjm" << endl;
+    cout << "making adjm" << endl;
 
     // resize the adjacency matrix
     int dim = adjacencyList.size();
@@ -149,23 +149,26 @@ void Graph::createAdjM() {
     for (int i = 0; i < dim; i++) {
         adjacencyMatrix[i].resize(dim);
     }
-    // cout << "matrix resized" << endl;
+    cout << "matrix resized" << endl;
 
     // initialize adjacency using our adjacency list
     for(auto entry : adjacencyList) {
         auto edges = entry.second;
         int col = vertI[entry.first];
-        if(edges.size()) { // if it has edges
+        cout << entry.first << " has " << edges.size() << " outgoing edges" << endl;
+        if(edges.size() > 0) { // if it has outgoing edges
             double val = 1.0/edges.size();
-            // cout << "populizing col with connection weights" << endl;
+            cout << "populizing col with connection weights" << endl;
             for(auto edge : edges) {
                 adjacencyMatrix[vertI[edge->destination]][col] = val;
+                cout << "inserting " << val << " at " << vertI[edge->destination] << ", " << col << endl;
             }
         } else {
-            // cout << "populizing col generally" << endl;
+            cout << "populizing col generally" << endl;
             double val = 1.0/adjacencyList.size();
             for(size_t row = 0; row < adjacencyList.size(); row++) {
                 adjacencyMatrix[row][col] = val;
+                cout << "inserting " << val << " at " << row << ", " << col << endl;
             }
         }
     }

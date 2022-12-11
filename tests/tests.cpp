@@ -95,8 +95,6 @@ Graph CircleGraph() {
 }
 
 
-
-
 /* Rule Of 3 Tests */
 TEST_CASE("Equals operator", "[ruleof3]") {
     Graph g1 = DisconnectedGraph();
@@ -119,8 +117,6 @@ TEST_CASE("Assignment operator", "[ruleof3]") {
     Graph g2 = g1;
     REQUIRE(g2 == SimpleGraph());
 }
-
-
 
 
 /* GRAPH IMPLEMENTATION TESTS */
@@ -161,12 +157,11 @@ TEST_CASE("simple graph incidence and adjacency", "[simpleGraph][incidentEdges][
 
 
 /*
-* The graph for these tests are in web.tsv
+* The graph for these tests are in web-connected.tsv
 */
+TEST_CASE("vertices for connected graph are correct", "[constructor][vertices]") {
 
-TEST_CASE("vertices for connected graph is correct", "[constructor][vertices]") {
-
-    string file("../web.tsv");
+    string file("../input/web-connected.tsv");
     Graph graph(file);
     cout << "graph made" << endl;
     auto v = graph.getVertices();
@@ -179,7 +174,6 @@ TEST_CASE("vertices for connected graph is correct", "[constructor][vertices]") 
         REQUIRE(std::count(v.begin(), v.end(), label) == 1);
     }
 }
-
 
 
 /* BFS ALGORITHM TEST CASES */
@@ -222,7 +216,7 @@ TEST_CASE("BFS with One vertex", "[BFS]") {
 }
 
 TEST_CASE("Disconnected BFS with input stream", "[BFS]") {
-    string file("../tests/web-connected.tsv");
+    string file("../input/web-connected.tsv");
     Graph graph(file);
 
     Vertex start = graph.getVertices().at(0);
@@ -237,7 +231,7 @@ TEST_CASE("Disconnected BFS with input stream", "[BFS]") {
     REQUIRE(result[6] == 6);
 }
 
-TEST_CASE("Test  Disconnected Graph starting in the middle of vertex List" , "[BFS][defaultConstructor][disconnectedGraph]") {
+TEST_CASE("Test Disconnected Graph starting in the middle of vertex List" , "[BFS][defaultConstructor][disconnectedGraph]") {
     Graph graph = DisconnectedGraph();
 
     Vertex start = graph.getVertices().at(4);
@@ -253,4 +247,34 @@ TEST_CASE("Test  Disconnected Graph starting in the middle of vertex List" , "[B
 }
 
 /* PAGERANK ALGORITHM TEST CASES */
+TEST_CASE("PageRank on graph with no edges is all the same", "[PageRank][disconnectedGraph]") {
+    Graph g;
 
+    g.insertVertex(1);
+    g.insertVertex(2);
+    g.insertVertex(3);
+    g.insertVertex(4);
+    g.insertVertex(5);
+    g.insertVertex(6);
+    g.insertVertex(7);
+
+    g.createAdjM();
+
+    vector<pair<Vertex, double>> v = pageRank(g);
+
+    for (int i = 0; i < (int)v.size(); i++) {
+        REQUIRE(v[i].second == 1.0 / v.size());
+    }
+}
+
+TEST_CASE("PageRank on small graph", "[PageRank]") {
+    Graph g("../input/web-graph-test.txt");
+
+    vector<pair<Vertex, double>> v = pageRank(g);
+
+    REQUIRE(v[0].first.getID() == 4);
+    REQUIRE(v[1].first.getID() == 1);
+    REQUIRE(v[2].first.getID() == 3);
+    REQUIRE(v[3].first.getID() == 2);
+    REQUIRE(v[4].first.getID() == 0);
+}
