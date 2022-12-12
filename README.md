@@ -4,11 +4,11 @@
 
 ## Table of Contents
 * [Documentation](https://github.com/anisha-jog/cs225-final-project-aamc/tree/main/Documentation)
-* [Installation](https://github.com/cs225-final-project-aamc#installation)
+* [Installation](https://github.com/anisha-jog/cs225-final-project-aamc#installation)
 * [Features](https://github.com/anisha-jog/cs225-final-project-aamc#features)
 * [How to Build & Run (with execution examples)](https://github.com/anisha-jog/cs225-final-project-aamc#build-and-run)
-* [Testing](https://github.com/anisha-jog/cs225-final-project-aamc#tests)
-* [Folder Hierarchy](https://github.com/anisha-jog/cs225-final-project-aamc#folder-heirarchy)
+* [Testing](https://github.com/anisha-jog/cs225-final-project-aamc#testing)
+* [Folder Hierarchy](https://github.com/anisha-jog/cs225-final-project-aamc#folder-hierarchy)
 
 ## Installation
 <details>
