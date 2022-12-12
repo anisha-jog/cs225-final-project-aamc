@@ -34,7 +34,7 @@ We have test cases to test our rule of three functions and constructors for the 
 
 ## BFS
 
-Our BFS traversal starts at a given vertex and, using a queue, travels to each connected vertex while tracking visited vertices. Once it finds all of the vertices in the connected subgraph, it goes through all vertices to identify any components that are disconnected from the starting point's subgraph to completely cover the entire graph. This makes our traversal able to appropriately handle and continue to work in a disconnected graph. This algorithm is able to run on our entire dataset, though it may require a lower ID cap on a low-performance computer due to the non-availability of sufficient power or RAM.<br>
+Our BFS traversal starts at a given vertex and travels to each connected vertex while using a queue to track visited vertices. Once it finds all of the vertices in the connected subgraph, it goes through all vertices to identify any components that are disconnected from the starting point's subgraph to completely cover the entire graph. This makes our traversal able to appropriately handle and continue to work in a disconnected graph. This algorithm is able to run on our entire dataset, though it may require a lower ID cap on a low-performance computer due to the non-availability of sufficient power or RAM.<br>
 
 We have test cases to evaluate the BFS traversal on a variety of smaller graphs, including simple, connected, disconnected, and circular graphs. These tests check that the traversal visits these vertices in the right order. It also tests for different starting points and numbers of vertices.<br>
 
