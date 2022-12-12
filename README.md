@@ -20,10 +20,10 @@ Running main will step through building our graph, running the BFS algorithm, an
 
 ## Folder Hierarchy
 
-`Documentation` - project documentation for non-code material such as our proposal, written report, and presentation video.
-`entry` - contains main.cpp.
-`input` - contains all of the input files we use. Each file contains a set of graph edges; the first number is the source vertex, and the second number is the destination vertex.
-`lib` - dummy folder for libraries. Currently, we are not using any external libraries.
-`output` - contains output files to write algorithm results to.
-`src` - contains our project implementation, including the graph class, graph functions, and our algorithms.
+`Documentation` - project documentation for non-code material such as our proposal, written report, and presentation video.<br>
+`entry` - contains main.cpp.<br>
+`input` - contains all of the input files we use. Each file contains a set of graph edges; the first number is the source vertex, and the second number is the destination vertex.<br>
+`lib` - dummy folder for libraries. Currently, we are not using any external libraries.<br>
+`output` - contains output files to write algorithm results to.<br>
+`src` - contains our project implementation, including the graph class, graph functions, and our algorithms.<br>
 `tests` - contains tests.cpp.
