@@ -133,7 +133,6 @@ TEST_CASE("insert vertices in a simple graph ", "[simpleGraph][vertices][insertV
     REQUIRE(vertices.size() == 3);
 
     for (int i = 0; i < (int)vertices.size() && i < (int)correct.size(); i++) {
-        // cout << correct[i] << endl;
         REQUIRE(std::count(vertices.begin(), vertices.end(), correct[i]) == 1);
     }
 }
@@ -154,19 +153,11 @@ TEST_CASE("simple graph incidence and adjacency", "[simpleGraph][incidentEdges][
     REQUIRE(g.incidentEdges(2)[0]->destination == 3);
 }
 
-
-
-/*
-* The graph for these tests are in web-connected.tsv
-*/
 TEST_CASE("vertices for connected graph are correct", "[constructor][vertices]") {
-
     string file("../input/web-connected.tsv");
     Graph graph(file);
-    cout << "graph made" << endl;
     auto v = graph.getVertices();
     vector<int> actualLabels = {0, 1, 2, 3, 4, 5, 6};
-    cout << "vertices gotten" << endl;
 
     REQUIRE(v.size() == actualLabels.size());
     
@@ -246,6 +237,7 @@ TEST_CASE("Test Disconnected Graph starting in the middle of vertex List" , "[BF
     REQUIRE(result[6] == 4);
 }
 
+
 /* PAGERANK ALGORITHM TEST CASES */
 TEST_CASE("PageRank on graph with no edges is all the same", "[PageRank][disconnectedGraph]") {
     Graph g;
@@ -258,8 +250,6 @@ TEST_CASE("PageRank on graph with no edges is all the same", "[PageRank][disconn
     g.insertVertex(6);
     g.insertVertex(7);
 
-    g.createAdjM();
-
     vector<pair<Vertex, double>> v = pageRank(g);
 
     for (int i = 0; i < (int)v.size(); i++) {
@@ -268,7 +258,7 @@ TEST_CASE("PageRank on graph with no edges is all the same", "[PageRank][disconn
 }
 
 TEST_CASE("PageRank on small graph", "[PageRank]") {
-    Graph g("../input/web-graph-test.txt");
+    Graph g("../input/web-small.txt");
 
     vector<pair<Vertex, double>> v = pageRank(g);
 
@@ -277,4 +267,93 @@ TEST_CASE("PageRank on small graph", "[PageRank]") {
     REQUIRE(v[2].first.getID() == 3);
     REQUIRE(v[3].first.getID() == 2);
     REQUIRE(v[4].first.getID() == 0);
+}
+
+TEST_CASE("simple graph adjacency matrix", "[defaultConstructor][simpleGraph][adjacencyMatrix]") {
+    Graph graph = SimpleGraph();
+
+    graph.createAdjM();
+
+    vector<vector<double>> mat = graph.getAdjM();
+    
+    REQUIRE(mat.size() == 3);
+    REQUIRE(mat[0].size() == 3);
+
+    REQUIRE(mat[1][0] == 1);
+    REQUIRE(mat[2][1] == 1);
+    REQUIRE(mat[0][0] == 0);
+    REQUIRE(mat[1][1] == 0);
+    REQUIRE(mat[2][2] == 1.0 / 3.0);
+    REQUIRE(mat[0][1] == 0);
+    REQUIRE(mat[1][2] == 1.0 / 3.0);
+    REQUIRE(mat[0][2] == 1.0 / 3.0);
+    REQUIRE(mat[2][0] == 0);
+}
+
+TEST_CASE("PageRank on connected graph is correct", "[connectedGraph]") {
+    Graph graph("../input/web-connected.tsv");
+
+    vector<pair<Vertex, double>> v = pageRank(graph, 0.85, 1);
+
+    // all of the other vertices should have the same pagerank value, just 0 should be at the bottom
+    // this is because 0 has no incoming edges
+    for (int i = 0; i < (int)v.size() - 2; i++) {
+        REQUIRE(std::ceil(v[i].second * 100.0) / 100.0 == std::ceil(v[i+1].second * 100.0) / 100.0);
+    }
+    REQUIRE(v[v.size() - 1].first == 0);
+}
+
+TEST_CASE("Adjacency matrix for disconnected graph is correct", "[disconnectedGraph][adjacencyMatrix]") {
+    Graph graph("../input/web-disconnected.tsv");
+
+    // the graph will read vertices in the order 1 2 3 0 4 6 5
+    vector<vector<double>> true_adj = {{0, 0, 1.0 / 7.0, 0, 0, 0, 0},
+                                        {1, 0, 1.0 / 7.0, 1, 0, 0, 0},
+                                        {0, 1, 1.0 / 7.0, 0, 0, 0, 0},
+                                        {0, 0, 1.0 / 7.0, 0, 0, 0, 0},
+                                        {0, 0, 1.0 / 7.0, 0, 0, 0, 1},
+                                        {0, 0, 1.0 / 7.0, 0, 1, 0, 0},
+                                        {0, 0, 1.0 / 7.0, 0, 0, 1, 0}};
+
+    graph.createAdjM();
+    vector<vector<double>> adjm = graph.getAdjM();
+
+    REQUIRE(adjm.size() == true_adj.size());
+    REQUIRE(adjm[0].size() == true_adj[0].size());
+
+    for (int i = 0; i < (int)adjm.size(); i++) {
+        for (int j = 0; j < (int)adjm[i].size(); j++) {
+            REQUIRE(adjm[i][j] == true_adj[i][j]);
+        }
+    }
+}
+
+TEST_CASE("Disconnected graph PageRank", "[disconnectedGraph][PageRank]") {
+    Graph graph("../input/web-disconnected.tsv");
+
+    vector<double> expected_scores = {0.238138, 0.238138, 0.238138, 0.1177, 0.0964458,
+                                      0.0357207, 0.0357207};
+
+    auto results = pageRank(graph);
+    vector<double> actual_scores;
+    std::transform(results.begin(), results.end(), std::back_inserter(actual_scores), [](auto pair) { return pair.second; });
+
+    for (int i = 0; i < (int)actual_scores.size(); i++) {
+        REQUIRE(std::ceil(expected_scores[i] * 100.0) / 100.0 == std::ceil(actual_scores[i] * 100.0) / 100.0);
+    }
+}
+
+TEST_CASE("Complex graph PageRank", "[complexGraph][pageRank]") {
+    Graph graph("../input/web-complex.txt");
+
+    vector<double> expected_scores = {0.21098858, 0.15846934, 0.15011459, 0.10217013, 0.09473939,
+        0.06646371, 0.06348671, 0.05946397, 0.05660358, 0.0125, 0.0125, 0.0125};
+
+    auto results = pageRank(graph);
+    vector<double> actual_scores;
+    std::transform(results.begin(), results.end(), std::back_inserter(actual_scores), [](auto pair) { return pair.second; });
+
+    for (int i = 0; i < (int)actual_scores.size(); i++) {
+        REQUIRE(std::ceil(expected_scores[i] * 100.0) / 100.0 == std::ceil(actual_scores[i] * 100.0) / 100.0);
+    }
 }

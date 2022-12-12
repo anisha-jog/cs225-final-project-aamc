@@ -100,22 +100,7 @@ namespace algos {
      * @return 2D matrix product.
     */
     vector<vector<double>> multiplyMatrices(Graph& graph, vector<vector<double>> mat1, vector<vector<double>> mat2) {
-        // // print matrices, for debugging
-        // cout << "Matrix 1:" << endl;
-        // for (int i = 0; i < (int)mat1.size(); i++) {
-        //     for (int j = 0; j < (int)mat1[i].size(); j++) {
-        //         cout << mat1[i][j] << " ";
-        //     }
-        //     cout << endl;
-        // }
-        // cout << "Matrix 2:" << endl;
-        // for (int i = 0; i < (int)mat2.size(); i++) {
-        //     for (int j = 0; j < (int)mat2[i].size(); j++) {
-        //         cout << mat2[i][j] << " ";
-        //     }
-        //     cout << endl;
-        // }
-        
+        // create the product matrix size
         vector<vector<double>> result;
         cout << "Creating results matrix..." << endl;
         for (int i = 0; i < (int)mat1.size(); i++) {
@@ -133,18 +118,6 @@ namespace algos {
             }
         }
         return result;
-
-        // graph.CSR(mat1);
-        // vector<double> v1 = graph.getValues();
-        // vector<int> c1 = graph.getCol();
-        // vector<int> r1 = graph.getRow();
-
-        // graph.CSR(mat2);
-        // vector<double> v2 = graph.getValues();
-        // vector<int> c2 = graph.getCol();
-        // vector<int> r2 = graph.getRow();
-
-        // graph.matrixMult(r1, c1, v1, r2, c2, v2);
     }
 
     /**
@@ -166,15 +139,19 @@ namespace algos {
         //   (our iterations are indicative of the number of pages the user will visit.)
         //   (we will also make sure we are not hitting tolerance, i.e. if we hit tolerance then it is considered stable.)
         // - sort and return PageRank vector
+
         vector<pair<Vertex, double>> page_list;
         int n = graph.getSize();
-        vector<Vertex> vertices = graph.getVertices();
-        vector<vector<double>> adjm = graph.getAdjM();
 
         if (n == 0) {
             cout << "Error: The graph contains no vertices." << endl;
             return page_list;
         }
+
+        cout << "Creating adjacency matrix..." << endl;
+        graph.createAdjM();
+        vector<Vertex> vertices = graph.getVertices();
+        vector<vector<double>> adjm = graph.getAdjM();
 
         vector<double> x(n, 1.0 / n);
 
@@ -187,50 +164,28 @@ namespace algos {
             }
         }
 
-        // for (int i = 0; i < (int)adjm.size(); i++) {
-        //     for (int j = 0; j < (int)adjm[i].size(); j++) {
-        //         cout << adjm[i][j] << " ";
-        //     }
-        //     cout << endl;
-        // }
-        // cout << endl;
-
         cout << "Performing iterations..." << endl;
         for (int i = 0; i < iterations; i++) {
             cout << "Iteration " << i + 1 << endl;
-            adjm = multiplyMatrices(graph, adjm, adjm);
+            adjm = multiplyMatrices(graph, adjm, adjm); // matrix formula from Markov Chains
         }
 
         vector<vector<double>> y;
-        // transpose x
+        // transpose x for multiplication
         for (int i = 0; i < (int)x.size(); i++) {
             vector<double> temp(1, x[i]);
             y.push_back(temp);
         }
+        // multiply the adjm with the starting vector
         y = multiplyMatrices(graph, adjm, y);
-        cout << "The size of y is " << y.size() << endl;
-        // cout << "The size of row is " << graph.getRow().size() << endl;
-        // cout << "The size of col is " << graph.getCol().size() << endl;
 
+        // match indices and sort in descending order
         vector<int> idx(y.size());
         for (int i = 0; i < (int)idx.size(); i++) {
             idx[graph.getIndex(vertices[i])] = vertices[i].getID();
         }
-
-        // for (int i = 0; i < (int)y.size(); i++) {
-        //     for (int j = 0; j < (int)y[i].size(); j++) {
-        //         cout << y[i][j] << " ";
-        //     }
-        //     cout << endl;
-        // }
-        // cout << endl;
-
-        // for (int i = 0; i < (int)idx.size(); i++) {
-        //     cout << idx[i] << " ";
-        // }
-        // cout << endl << endl;
         
-        stable_sort(idx.begin(), idx.end(), [&y, &graph](int a, int b) { return y[graph.getIndex(a)][0] > y[graph.getIndex(b)][0];});
+        stable_sort(idx.begin(), idx.end(), [&y, &graph](int a, int b) { return y[graph.getIndex(a)][0] > y[graph.getIndex(b)][0]; });
 
         cout << "Creating vector..." << endl;
         for(auto i : idx) {
