@@ -65,11 +65,11 @@ If adding custom files, ensure that vertices are labelled numerically and are in
 <details>
  <summary> <strong>Click to Expand</strong></summary>
 
-The code provides a wide variety of tests for the various functions within the program. To run them and see the resulting account of success and failure use the command:
+The code provides a wide variety of tests for the various functions within the program. Tests include checks for various parts of each of our graph and algorithm implementations, including Rule of Three functions, proper graph building, adjacency matrix construction, correct BFS traversal, and correct PageRank rankings with multiple types of graphs. To run them and see the resulting account of success and failure, use the command:
 ```bash
 make test
 ```
-to build them, and then run the test executible using:
+to build them, and then run the test executable using:
 ```bash
 ./test
 ```
