@@ -80,21 +80,26 @@ Graph::Graph(string filename, int cap, int lines) {
     }
 
     while (!fs.eof()) {
+        // graph size limiter
         if (lines >= 0 && l >= lines) break;
 
         fs >> v1.id;
         fs >> v2.id;
         l++;
 
+        // graph size limiter
         if (v1.getID() > cap || v2.getID() > cap) continue;
         
+        // add first vertex to list if not found
         if (vertI.find(v1) == vertI.end()) { 
             vertI[v1] = vertI.size();
             vertices.push_back(v1);
         }
 
+        // add edge to adjacency list
         adjacencyList[v1].push_back(new Graph::Edge(v1, v2));
 
+        // add second vertex if not found
         if (adjacencyList.find(v2) == adjacencyList.end()) {
             adjacencyList[v2] = vector<Edge*>();
             vertI.insert(std::make_pair(v2, vertI.size()));
@@ -142,7 +147,7 @@ void Graph::createAdjM() {
             for(auto edge : edges) {
                 adjacencyMatrix[vertI[edge->destination]][col] = val;
             }
-        } else {
+        } else { // if no outgoing edges, all the vertices have the same importance
             double val = 1.0/adjacencyList.size();
             for(size_t row = 0; row < adjacencyList.size(); row++) {
                 adjacencyMatrix[row][col] = val;

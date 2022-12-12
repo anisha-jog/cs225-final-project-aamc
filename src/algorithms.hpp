@@ -100,22 +100,7 @@ namespace algos {
      * @return 2D matrix product.
     */
     vector<vector<double>> multiplyMatrices(Graph& graph, vector<vector<double>> mat1, vector<vector<double>> mat2) {
-        // // print matrices, for debugging
-        // cout << "Matrix 1:" << endl;
-        // for (int i = 0; i < (int)mat1.size(); i++) {
-        //     for (int j = 0; j < (int)mat1[i].size(); j++) {
-        //         cout << mat1[i][j] << " ";
-        //     }
-        //     cout << endl;
-        // }
-        // cout << "Matrix 2:" << endl;
-        // for (int i = 0; i < (int)mat2.size(); i++) {
-        //     for (int j = 0; j < (int)mat2[i].size(); j++) {
-        //         cout << mat2[i][j] << " ";
-        //     }
-        //     cout << endl;
-        // }
-        
+        // create the product matrix size
         vector<vector<double>> result;
         cout << "Creating results matrix..." << endl;
         for (int i = 0; i < (int)mat1.size(); i++) {
@@ -179,48 +164,28 @@ namespace algos {
             }
         }
 
-        // for (int i = 0; i < (int)adjm.size(); i++) {
-        //     for (int j = 0; j < (int)adjm[i].size(); j++) {
-        //         cout << adjm[i][j] << " ";
-        //     }
-        //     cout << endl;
-        // }
-        // cout << endl;
-
         cout << "Performing iterations..." << endl;
         for (int i = 0; i < iterations; i++) {
             cout << "Iteration " << i + 1 << endl;
-            adjm = multiplyMatrices(graph, adjm, adjm);
+            adjm = multiplyMatrices(graph, adjm, adjm); // matrix formula from Markov Chains
         }
 
         vector<vector<double>> y;
-        // transpose x
+        // transpose x for multiplication
         for (int i = 0; i < (int)x.size(); i++) {
             vector<double> temp(1, x[i]);
             y.push_back(temp);
         }
+        // multiply the adjm with the starting vector
         y = multiplyMatrices(graph, adjm, y);
-        // cout << "The size of y is " << y.size() << endl;
 
+        // match indices and sort in descending order
         vector<int> idx(y.size());
         for (int i = 0; i < (int)idx.size(); i++) {
             idx[graph.getIndex(vertices[i])] = vertices[i].getID();
         }
-
-        // for (int i = 0; i < (int)y.size(); i++) {
-        //     for (int j = 0; j < (int)y[i].size(); j++) {
-        //         cout << y[i][j] << " ";
-        //     }
-        //     cout << endl;
-        // }
-        // cout << endl;
-
-        // for (int i = 0; i < (int)idx.size(); i++) {
-        //     cout << idx[i] << " ";
-        // }
-        // cout << endl << endl;
         
-        stable_sort(idx.begin(), idx.end(), [&y, &graph](int a, int b) { return y[graph.getIndex(a)][0] > y[graph.getIndex(b)][0];});
+        stable_sort(idx.begin(), idx.end(), [&y, &graph](int a, int b) { return y[graph.getIndex(a)][0] > y[graph.getIndex(b)][0]; });
 
         cout << "Creating vector..." << endl;
         for(auto i : idx) {
