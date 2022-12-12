@@ -5,10 +5,10 @@
 ## Table of Contents
 * [Documentation](https://github.com/anisha-jog/cs225-final-project-aamc/tree/main/Documentation)
 * [Installation](https://github.com/cs225-final-project-aamc#installation)
-* [Features]()
-* [How to Build (with execution examples)]()
-* [Testing]()
-* [Project Structure](https://github.com/cs225-final-project-aamc#folder-hierarchy)
+* [Features](https://github.com/anisha-jog/cs225-final-project-aamc#features)
+* [How to Build & Run (with execution examples)](https://github.com/anisha-jog/cs225-final-project-aamc#build-and-run)
+* [Testing](https://github.com/anisha-jog/cs225-final-project-aamc#tests)
+* [Folder Hierarchy](https://github.com/anisha-jog/cs225-final-project-aamc#folder-heirarchy)
 
 ## Installation
 <details>
@@ -18,9 +18,19 @@ To setup this project, clone the repository locally using the command
 ```bash
 git clone https://github.com/anisha-jog/cs225-final-project-aamc.git
 ```
-then cd into the newly made directory to be able to utilize the commands in the <a href=""><strong> Build and Run </strong></a> section.
+then cd into the newly made directory to be able to utilize the commands in the <a href="https://github.com/anisha-jog/cs225-final-project-aamc#build-and-run"><strong> Build and Run </strong></a> section.
 </details>
 
+## Features
+<details>
+ <summary> <strong>Click to Expand</strong></summary>
+
+Two main features are accessible within our project:
+
+1. Pagerank algorithm on any given .tsv file (won't make sense for a variety of datasets)
+2. BFS algorithm on any given .tsv file 
+
+</details>
 
 ## Build and Run
 <details>
@@ -41,7 +51,23 @@ After building the main executable from the main command, there are 2 main comma
 ```
    
 Running main will step through building our graph, running the BFS algorithm, and running the PageRank algorithm, the results of which will be written to files in the output folder. Follow the prompts given in the terminal to enter files for input/output. Comments are available in the file to explain which parameters to change for what purpose, if desired. Running test will run all of our test cases for our graph, BFS algorithm, and PageRank algorithm.
+</details>
 
+## Testing
+<details>
+ <summary> <strong>Click to Expand</strong></summary>
+
+The code provides a wide variety of tests for the various functions within the program. To run them and see the resulting account of success and failure use the command:
+```bash
+make test
+```
+to build them, and then run the test executible using:
+```bash
+./test
+```
+The tests that will be run are located within the tests folder of the project.
+
+</details>
 
 ## Folder Hierarchy
 <details>
