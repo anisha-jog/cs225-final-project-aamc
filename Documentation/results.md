@@ -1,4 +1,4 @@
-#CS 255 Final Project: Web Graphs & PageRank Results
+# CS 255 Final Project: Web Graphs & PageRank Results
 ## Goals
 - Load a dataset of web graph edges from the Stanford Large Network Dataset Collection (web-Google) into a graph structure
 - Perform a complete breadth-first traversal on our graph
@@ -22,7 +22,7 @@ Wherever possible, we have observed good programming habits; this may be through
 
 ## Graph Class
 
-Our graph class includes structs for vertices and edges and various data structures to store and manipulate data. We build an adjacency list for our BFS algorithm with a space complexity of O(V + E). In addition, we have a list of vertices and a map that connects IDs to their indices, both with O(V) space complexity. Our adjacency matrix was necessary for the PageRank algorithm and has a space complexity of O(V^2).<br><br>
+Our graph class includes structs for vertices and edges and various data structures to store and manipulate data. We build an adjacency list for our BFS algorithm with a space complexity of O(V + E). In addition, we have a list of vertices and a map that connects IDs to their indices, both with O(V) space complexity. Our adjacency matrix was necessary for the PageRank algorithm and has a space complexity of O(V^2).<br>
 
 The graph class contains functions for Rule of Three, constructors, and helper functions for accessing member variables. The constructors include a blank default constructor, a copy constructor, and a constructor that reads data from a file in the following format:<br>
 |    |  |
@@ -34,16 +34,16 @@ We have test cases to test our rule of three functions and constructors for the 
 
 ## BFS
 
-Our BFS traversal starts at a given vertex and, using a queue, travels to each connected vertex while tracking visited vertices. Once it finds all of the vertices in the connected subgraph, it goes through all vertices to identify any components that are disconnected from the starting point's subgraph to completely cover the entire graph. This makes our traversal able to appropriately handle and continue to work in a disconnected graph. This algorithm is able to run on our entire dataset, though it may require a lower ID cap on a low-performance computer due to the non-availability of sufficient power or RAM.<br><br>
+Our BFS traversal starts at a given vertex and, using a queue, travels to each connected vertex while tracking visited vertices. Once it finds all of the vertices in the connected subgraph, it goes through all vertices to identify any components that are disconnected from the starting point's subgraph to completely cover the entire graph. This makes our traversal able to appropriately handle and continue to work in a disconnected graph. This algorithm is able to run on our entire dataset, though it may require a lower ID cap on a low-performance computer due to the non-availability of sufficient power or RAM.<br>
 
-We have test cases to evaluate the BFS traversal on a variety of smaller graphs, including simple, connected, disconnected, and circular graphs. These tests check that the traversal visits these vertices in the right order. It also tests for different starting points and numbers of vertices.<br><br>
+We have test cases to evaluate the BFS traversal on a variety of smaller graphs, including simple, connected, disconnected, and circular graphs. These tests check that the traversal visits these vertices in the right order. It also tests for different starting points and numbers of vertices.<br>
 
 The complexity of our BFS algorithm is O(V^2 + E).
 
 ## PageRank
-Our PageRank algorithm is implemented with an adjacency matrix and calculates a sorted vector of ranked pages at different iterations that works in connected and disconnected graphs. It uses the Markov Chain interpretation of the algorithm to apply a random factor to all vertices (i.e. the chance that a user will get bored and click on a random page, even if it is not linked by the current page). It calculates a vector of pages and their PageRank values to determine how likely they are to be visited after a certain number of iterations, sorted in descending order. Since this involves the creation of an adjacency matrix and multiplication of matrices, which is complex to perform in C++, this algorithm can handle up to 20000 vertices (ID cap of 50000) on a high-performance computer, though for faster runtime or a low-performance computer it is recommeded to lower the ID cap to less than 20000 (3000 vertices), especially for multiple iterations.<br><br>
+Our PageRank algorithm is implemented with an adjacency matrix and calculates a sorted vector of ranked pages at different iterations that works in connected and disconnected graphs. It uses the Markov Chain interpretation of the algorithm to apply a random factor to all vertices (i.e. the chance that a user will get bored and click on a random page, even if it is not linked by the current page). It calculates a vector of pages and their PageRank values to determine how likely they are to be visited after a certain number of iterations, sorted in descending order. Since this involves the creation of an adjacency matrix and multiplication of matrices, which is complex to perform in C++, this algorithm can handle up to 20000 vertices (ID cap of 50000) on a high-performance computer, though for faster runtime or a low-performance computer it is recommeded to lower the ID cap to less than 20000 (3000 vertices), especially for multiple iterations.<br>
 
-We have test cases to evaluate whether the PageRank list is correct. Some cases test that the rank of page IDs is correct, while others check that the PageRank value is correct based on manual calculation. The graphs for these tests include simple, disconnected, and connected graphs.
+We have test cases to evaluate whether the PageRank list is correct. Some cases test that the rank of page IDs is correct, while others check that the PageRank value is correct based on manual calculation. The graphs for these tests include simple, disconnected, and connected graphs.<br>
 
 The complexity of our PageRank algorithm is O(V^3).
 
@@ -66,11 +66,11 @@ Google Dataset (Cap of 10000, 835 vertices):
 ```
 
 ```
-PageRank
+PageRank (Format: Page ID, PageRank number)
 
 Connected Graph:
 
-1 Iteration:
+1 Iteration, alpha = 0.85:
 1	0.163095
 5	0.163095
 6	0.163095
@@ -82,7 +82,7 @@ Connected Graph:
 
 Disconnected Graph:
 
-1 Iteration:
+1 Iteration, alpha = 0.85:
 3	0.28027
 4	0.177055
 5	0.177055
@@ -91,7 +91,7 @@ Disconnected Graph:
 0	0.0408819
 1	0.0408819
 
-10 Iterations:
+10 Iterations, alpha - 0.85:
 6	0.238138
 4	0.238138
 5	0.238138
@@ -100,7 +100,9 @@ Disconnected Graph:
 0	0.0357207
 1	0.0357207
 
-Google Dataset (835 vertices, alpha = 0.85, 5 iterations) - first 10 pages (Format: Page ID, PageRank number):
+Google Dataset (835 vertices, 5 iterations), first 10 pages:
+
+alpha = 0.85:
 7314	0.0109186
 6236	0.0104514
 1739	0.00969656
@@ -111,7 +113,38 @@ Google Dataset (835 vertices, alpha = 0.85, 5 iterations) - first 10 pages (Form
 3496	0.0061728
 8316	0.00585306
 6115	0.00543855
+
+alpha = 0.5:
+7314	0.0125868
+8316	0.00690245
+6236	0.00460163
+6111	0.00419561
+1739	0.0035189
+9533	0.00345123
+3170	0.00324821
+5314	0.00324821
+8979	0.00324821
+4635	0.00324821
+
+alpha = 0.25:
+7314	0.00827035
+8316	0.00476171
+6236	0.00274007
+9533	0.00263147
+6111	0.002573
+3170	0.00250617
+5314	0.00250617
+8979	0.00250617
+4635	0.00250617
+4547	0.00225555
 ```
 
 # Conclusion & Reflection
 
+We found our PageRank results to be very interesting, as while the PageRank values turned out to be extremely small, it still established a clear list with pages that have more incoming edges towards the top while those with less were towards the bottom. We also learned that pages with the most incoming edges were not necessarily in the first entries, as random clicks to different websites affected how likely it was to be visited. This meant that the alpha value could affect how the pages were ordered, as shown above; while the top page remained the same, the positions of many of the subsequent pages shifted around, and all of the PageRank values were significantly smaller without the alpha boost.<br>
+
+We could also see that the number of iterations changed the values and order of our pages. This makes sense, since matrix multiplication would alter these values over more iterations; however, after a certain number of iterations, the vector would converge, meaning there was a little to no change between each iteration.<br>
+
+Given more time, we would like to change our implementation to use a sparse adjacency matrix. Unfortunately, an adjacency matrix with thousands of nodes makes it extremely complex to run and is often too much for a standard computer. Performing complex matrix multiplication also takes a very heavy toll on a computer. Using a sparse adjacency matrix not only reduces the space complexity of our structure, but it also reduces both the time to create the matrix and the time to multiply it with itself in the PageRank algorithm.<br>
+
+We would also like to implement Tarjan's algorithm for strongly connected components. This was one of our original goals, but due to the changes in our team and the lack of time, we reduced the scope of our project. In the future, we would like to use this algorithm to see groups of connected pages in our dataset.
