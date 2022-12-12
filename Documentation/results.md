@@ -5,7 +5,7 @@
 - Run the PageRank algorithm on our graph and output a list of pages ordered by likelihood of being visited
 - Examine the effects of changing the alpha parameter of the PageRank algorithm
 
-Overall, we accomplished our goals.
+Overall, we accomplished our goals, though our complexity is higher than expected.
 
 ## Our deliverables
 
