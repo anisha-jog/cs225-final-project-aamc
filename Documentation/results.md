@@ -16,8 +16,8 @@ Wherever possible, we have observed good programming habits; this may be through
 
 # Example results
 
-![Connected Graph](input/web-connected.jpeg)
-![Disconnected Graph](input/web-disconnected.jpeg)
+![Connected Graph](../input/web-connected.jpeg)
+![Disconnected Graph](../input/web-disconnected.jpeg)
 
 ```
 BFS
