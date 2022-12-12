@@ -27,7 +27,7 @@ then cd into the newly made directory to be able to utilize the commands in the 
 
 Two main features are accessible within our project:
 
-1. Pagerank algorithm on any given .tsv or .txt file (won't make sense for a variety of datasets)
+1. Pagerank algorithm on any given .tsv or .txt file
 2. BFS algorithm on any given .tsv or .txt file 
 
 Our Google dataset is in web-Google.txt.
