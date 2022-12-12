@@ -12,7 +12,6 @@ class Graph {
     public:
         struct Vertex {
             string id;
-            bool onStack;
 
             Vertex() { id = -1; };
             Vertex(int ids) : id(to_string(ids)) {};
@@ -97,34 +96,19 @@ class Graph {
          * Helper functions to access member variables in algos namespace.
         */
         void createAdjM();
-        void AdjMatFlat();
         vector<vector<double>> getAdjM() { return adjacencyMatrix; }
-
-
-        bool CSR(vector<vector<double>> matrix);
-        vector<double> getValues() { return values; }
-        vector<int> getRow() { return row; }
-        vector<int> getCol() { return col; }
-        void matrixMult(vector<int> r1, vector<int> c1, vector<double> v1, vector<int> r2, vector<int> c2, vector<double> v2);
 
     private:
         /*
          * Variables:
          * - adjacencyList: An unordered map that stores a vertex as a key and all of its edges (pointers) as values.
+         * - adjacencyMatrix: A 2D vector of doubles representing a matrix that tracks a transition/adjacency matrix for PageRank.
          * - vertices: A vector containing all of the vertices in the graph.
          * - vertI: An unordered map that stores a vertex as a key and its corresponding index in the vertices vector as a value.
-         * 
-         * PageRank specific variables:
-         * indices: Sparse representation of matrix indices
-         * values: Sparse representation of matrix values
-         * pr_vec: The pagerank vector
         */
         std::unordered_map<Vertex, std::vector<Edge*>, Hash> adjacencyList;
         vector<vector<double>> adjacencyMatrix;
         std::vector<Vertex> vertices;
         std::unordered_map<Vertex, int, Hash> vertI;
 
-        vector<int> row;
-        vector<int> col;
-        vector<double> values;
 };

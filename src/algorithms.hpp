@@ -133,18 +133,6 @@ namespace algos {
             }
         }
         return result;
-
-        // graph.CSR(mat1);
-        // vector<double> v1 = graph.getValues();
-        // vector<int> c1 = graph.getCol();
-        // vector<int> r1 = graph.getRow();
-
-        // graph.CSR(mat2);
-        // vector<double> v2 = graph.getValues();
-        // vector<int> c2 = graph.getCol();
-        // vector<int> r2 = graph.getRow();
-
-        // graph.matrixMult(r1, c1, v1, r2, c2, v2);
     }
 
     /**
@@ -166,15 +154,19 @@ namespace algos {
         //   (our iterations are indicative of the number of pages the user will visit.)
         //   (we will also make sure we are not hitting tolerance, i.e. if we hit tolerance then it is considered stable.)
         // - sort and return PageRank vector
+
         vector<pair<Vertex, double>> page_list;
         int n = graph.getSize();
-        vector<Vertex> vertices = graph.getVertices();
-        vector<vector<double>> adjm = graph.getAdjM();
 
         if (n == 0) {
             cout << "Error: The graph contains no vertices." << endl;
             return page_list;
         }
+
+        cout << "Creating adjacency matrix..." << endl;
+        graph.createAdjM();
+        vector<Vertex> vertices = graph.getVertices();
+        vector<vector<double>> adjm = graph.getAdjM();
 
         vector<double> x(n, 1.0 / n);
 
@@ -208,9 +200,7 @@ namespace algos {
             y.push_back(temp);
         }
         y = multiplyMatrices(graph, adjm, y);
-        cout << "The size of y is " << y.size() << endl;
-        // cout << "The size of row is " << graph.getRow().size() << endl;
-        // cout << "The size of col is " << graph.getCol().size() << endl;
+        // cout << "The size of y is " << y.size() << endl;
 
         vector<int> idx(y.size());
         for (int i = 0; i < (int)idx.size(); i++) {

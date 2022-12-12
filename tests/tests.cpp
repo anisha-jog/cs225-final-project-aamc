@@ -163,10 +163,8 @@ TEST_CASE("vertices for connected graph are correct", "[constructor][vertices]")
 
     string file("../input/web-connected.tsv");
     Graph graph(file);
-    cout << "graph made" << endl;
     auto v = graph.getVertices();
     vector<int> actualLabels = {0, 1, 2, 3, 4, 5, 6};
-    cout << "vertices gotten" << endl;
 
     REQUIRE(v.size() == actualLabels.size());
     

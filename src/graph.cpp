@@ -79,17 +79,12 @@ Graph::Graph(string filename, int cap, int lines) {
         return;
     }
 
-    cout << "Vertex cap: " << cap << " Line limit: " << lines << endl;
     while (!fs.eof()) {
         if (lines >= 0 && l >= lines) break;
 
-        // string x, y;
         fs >> v1.id;
         fs >> v2.id;
         l++;
-        // std::getline(fs, x, '\t');
-        // std::getline(fs, y, '\n');
-        // cout << "Reading: " << x << " -> " << y << endl;
 
         if (v1.getID() > cap || v2.getID() > cap) continue;
         
@@ -101,23 +96,14 @@ Graph::Graph(string filename, int cap, int lines) {
         adjacencyList[v1].push_back(new Graph::Edge(v1, v2));
 
         if (adjacencyList.find(v2) == adjacencyList.end()) {
-            // cout << "vertex not in adjacency list" << endl;
             adjacencyList[v2] = vector<Edge*>();
             vertI.insert(std::make_pair(v2, vertI.size()));
             vertices.push_back(v2);
         }
     }
 
-    cout << "vertices:" << endl;
-    for (int i = 0; i < (int)vertices.size(); i++) {
-        cout << vertices.at(i) << " is at index " << vertI[vertices.at(i)] << endl;
-    }
-
-    cout << "file read" << endl;
+    cout << "File read" << endl;
     fs.close();
-    createAdjM();
-    // sparseAdjacencyMatrix();
-    cout << "matrix created" << endl;
 }
 
 void Graph::insertVertex(Vertex v) {
@@ -140,67 +126,27 @@ vector<Edge*> Graph::incidentEdges(Vertex v) const {
 }
 
 void Graph::createAdjM() {
-    // Making the adjacency matrix from the adjacency list
-    cout << "making adjm" << endl;
-
     // resize the adjacency matrix
     int dim = adjacencyList.size();
     adjacencyMatrix.resize(dim);
     for (int i = 0; i < dim; i++) {
         adjacencyMatrix[i].resize(dim);
     }
-    cout << "matrix resized" << endl;
 
     // initialize adjacency using our adjacency list
     for(auto entry : adjacencyList) {
         auto edges = entry.second;
         int col = vertI[entry.first];
-        cout << entry.first << " has " << edges.size() << " outgoing edges" << endl;
         if(edges.size() > 0) { // if it has outgoing edges
             double val = 1.0/edges.size();
-            cout << "populizing col with connection weights" << endl;
             for(auto edge : edges) {
                 adjacencyMatrix[vertI[edge->destination]][col] = val;
-                cout << "inserting " << val << " at " << vertI[edge->destination] << ", " << col << endl;
             }
         } else {
-            cout << "populizing col generally" << endl;
             double val = 1.0/adjacencyList.size();
             for(size_t row = 0; row < adjacencyList.size(); row++) {
                 adjacencyMatrix[row][col] = val;
-                cout << "inserting " << val << " at " << row << ", " << col << endl;
             }
         }
     }
-}
-
-bool Graph::CSR(vector<vector<double>> matrix) {
-
-    for (int i = 0; i < (int)matrix.size(); i++) {
-        for (int j = 0; j < (int)matrix[i].size(); j++) {
-            if (matrix[i][j] != 0) {
-                row.push_back(i);
-                col.push_back(j);
-                values.push_back(matrix[i][j]);
-            }
-        }
-    }
-    return true;
-}
-
-void Graph::matrixMult(vector<int> r1, vector<int> c1, vector<double> v1, vector<int> r2, vector<int> c2, vector<double> v2) {
-    vector<int> new_r, new_c;
-    vector<double> new_v;
-    for (unsigned long i = 0; i < r1.size() && i < r2.size(); i++) {
-        for (unsigned long j = 0; j < c1.size() && j < c2.size(); j++) {
-            if (r1[i] == r2[i] && c1[j] == c2[j]) {
-                new_r.push_back(r1[i]);
-                new_c.push_back(c1[j]);
-                new_v.push_back(r1[i] * c1[j]);
-            }
-        }
-    }
-    row = new_r;
-    col = new_c;
-    values = new_v;
 }
