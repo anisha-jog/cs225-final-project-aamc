@@ -43,7 +43,7 @@ The complexity of our BFS algorithm is O(V^2 + E).
 ## PageRank
 Our PageRank algorithm is implemented with an adjacency matrix and calculates a sorted vector of ranked pages at different iterations that works in connected and disconnected graphs. It uses the Markov Chain interpretation of the algorithm to apply a random factor to all vertices (i.e. the chance that a user will get bored and click on a random page, even if it is not linked by the current page). It calculates a vector of pages and their PageRank values to determine how likely they are to be visited after a certain number of iterations, sorted in descending order. Since this involves the creation of an adjacency matrix and multiplication of matrices, which is complex to perform in C++, this algorithm can handle up to 20000 vertices (ID cap of 50000) on a high-performance computer, though for faster runtime or a low-performance computer it is recommended to lower the ID cap to less than 20000 (3000 vertices), especially for multiple iterations.<br>
 
-We have test cases to evaluate whether the PageRank list is correct. Some cases test that the rank of page IDs is correct, while others check that the PageRank value is correct based on manual calculation. The graphs for these tests include simple, disconnected, and connected graphs.<br>
+We have test cases to evaluate whether the PageRank list is correct. Some cases test that the rank of page IDs is correct, while others check that the PageRank value is correct based on manual calculation. The graphs for these tests include simple, complex, disconnected, and connected graphs.<br>
 
 The complexity of our PageRank algorithm is O(V^3).
 
