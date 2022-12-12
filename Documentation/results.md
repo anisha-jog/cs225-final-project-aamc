@@ -51,8 +51,8 @@ The complexity of our PageRank algorithm is O(V^3).
 
 [Connected Graph](https://github.com/anisha-jog/cs225-final-project-aamc/blob/19374e9994b45ee287df5bd00512b28b406895de/input/web-connected.jpeg)<br>
 [Disconnected Graph](https://github.com/anisha-jog/cs225-final-project-aamc/blob/19374e9994b45ee287df5bd00512b28b406895de/input/web-disconnected.jpeg)<br>
-[Small Graph](https://github.com/anisha-jog/cs225-final-project-aamc/blob/19374e9994b45ee287df5bd00512b28b406895de/input/web-small.PNG)<br>
-[Complex Graph](https://github.com/anisha-jog/cs225-final-project-aamc/blob/19374e9994b45ee287df5bd00512b28b406895de/input/web-complex.PNG)<br>
+[Small Graph](https://github.com/anisha-jog/cs225-final-project-aamc/blob/f82606599288d1a0ef45b6c9203ab6c3f135f8b2/input/web-small.PNG)<br>
+[Complex Graph](https://github.com/anisha-jog/cs225-final-project-aamc/blob/f82606599288d1a0ef45b6c9203ab6c3f135f8b2/input/web-complex.PNG)<br>
 
 ```
 BFS
