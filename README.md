@@ -52,7 +52,13 @@ After building the main executable from the main command, there are 2 main comma
    ./main
 ```
    
-Running main will step through building our graph, running the BFS algorithm, and running the PageRank algorithm, the results of which will be written to files in the output folder. Follow the prompts given in the terminal to enter files for input/output. Comments are available in the file to explain which parameters to change for what purpose, if desired. Running test will run all of our test cases for our graph, BFS algorithm, and PageRank algorithm.
+Running main will step through building our graph, running the BFS algorithm, and running the PageRank algorithm, the results of which will be written to files in the output folder. Follow the prompts given in the terminal to enter files for input/output. Comments are available in the file to explain which parameters to change for what purpose, if desired. Running test will run all of our test cases for our graph, BFS algorithm, and PageRank algorithm.<br>
+
+If adding custom files, ensure that vertices are labelled numerically and are in this format (separated by a tab):
+|    |  |
+| ----------- | ----------- |
+| Vertex1      | Vertex2       |
+| Vertex1   | Vertex3        |
 </details>
 
 ## Testing
